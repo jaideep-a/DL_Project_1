@@ -468,7 +468,11 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    statusMessage.textContent = `✓ Successfully analyzed ${selectedFiles.length} image(s)!`;
+                    const succeeded = (data.results || []).filter(r => r.status === 'success').length;
+                    const skipped = (data.results || []).filter(r => r.status === 'skipped').length;
+                    statusMessage.textContent = skipped
+                        ? `✓ Analyzed ${succeeded} image(s). ${skipped} skipped.`
+                        : `✓ Successfully analyzed ${succeeded} image(s)!`;
                     statusMessage.className = 'status-message success';
                     selectedFiles = [];
                     previewContainer.innerHTML = '';

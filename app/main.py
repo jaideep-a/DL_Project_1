@@ -1,5 +1,4 @@
 import os
-import base64
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from .config import Config
@@ -114,51 +113,60 @@ def hospital_upload():
         )
 
         results = []
+        max_mb = Config.MAX_FILE_SIZE_MB
         for file in files:
-            if file and allowed_file(file.filename) and validate_file_size(file):
-                try:
-                    # Get prediction from model API
-                    prediction = get_prediction(file)
+            if not file or not file.filename:
+                results.append({'filename': '(no filename)', 'status': 'skipped', 'error': 'Empty or missing file.'})
+                continue
+            if not allowed_file(file.filename):
+                results.append({'filename': file.filename, 'status': 'skipped', 'error': 'File type not allowed. Use JPG or PNG.'})
+                continue
+            if not validate_file_size(file):
+                results.append({'filename': file.filename, 'status': 'skipped', 'error': f'File too large. Maximum size is {max_mb} MB.'})
+                continue
+            try:
+                # Get prediction from model API
+                prediction = get_prediction(file)
 
-                    # Save analysis to database
-                    analysis = create_analysis(
-                        upload_id=upload['id'],
-                        image_path=f"uploads/{generate_unique_filename(file.filename)}",
-                        prediction=prediction.get('prediction', 'UNCERTAIN'),
-                        confidence=prediction.get('confidence', 0),
-                        severity=get_severity_from_confidence(prediction.get('confidence', 0)),
-                        processing_time_ms=prediction.get('processing_time_ms', 0),
-                        model_version=prediction.get('model_version', 'v1.0'),
-                        heatmap_path=None
-                    )
+                # Save analysis to database
+                analysis = create_analysis(
+                    upload_id=upload['id'],
+                    image_path=f"uploads/{generate_unique_filename(file.filename)}",
+                    prediction=prediction.get('prediction', 'UNCERTAIN'),
+                    confidence=prediction.get('confidence', 0),
+                    severity=get_severity_from_confidence(prediction.get('confidence', 0)),
+                    processing_time_ms=prediction.get('processing_time_ms', 0),
+                    model_version=prediction.get('model_version', 'v1.0'),
+                    heatmap_path=None
+                )
 
-                    # Store patient metadata if provided
-                    age_range = request.form.get('age_range', 'unknown')
-                    gender = request.form.get('gender', 'Unknown')
-                    vaccination = request.form.get('vaccination_status', 'unknown')
-                    symptoms = request.form.getlist('symptoms')
+                # Store patient metadata if provided
+                age_range = request.form.get('age_range', 'unknown')
+                gender = request.form.get('gender', 'Unknown')
+                vaccination = request.form.get('vaccination_status', 'unknown')
+                symptoms = request.form.getlist('symptoms')
 
-                    create_patient_metadata(
-                        analysis_id=analysis['id'],
-                        age_range=age_range,
-                        gender=gender,
-                        vaccination_status=vaccination,
-                        symptoms=symptoms
-                    )
+                create_patient_metadata(
+                    analysis_id=analysis['id'],
+                    age_range=age_range,
+                    gender=gender,
+                    vaccination_status=vaccination,
+                    symptoms=symptoms
+                )
 
-                    results.append({
-                        'filename': file.filename,
-                        'status': 'success',
-                        'prediction': analysis['ai_prediction'],
-                        'confidence': analysis['confidence']
-                    })
+                results.append({
+                    'filename': file.filename,
+                    'status': 'success',
+                    'prediction': analysis['ai_prediction'],
+                    'confidence': analysis['confidence']
+                })
 
-                except ModelAPIError as e:
-                    results.append({
-                        'filename': file.filename,
-                        'status': 'error',
-                        'error': str(e)
-                    })
+            except ModelAPIError as e:
+                results.append({
+                    'filename': file.filename,
+                    'status': 'error',
+                    'error': str(e)
+                })
 
         return jsonify({
             'upload_id': upload['id'],
