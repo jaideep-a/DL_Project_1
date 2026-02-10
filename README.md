@@ -205,9 +205,9 @@ The following merged pull requests were developed with Claude AI assistance:
 
 ## Team Members
 
-- **Jaydip Patel** - Project lead, model training, web development
-- **Hanfu** - Project member
-- **Keming** - Project member
+- **Jaideep Aher**
+- **Hanfu**
+- **Keming**
 
 ## Medical Disclaimer
 
