@@ -1,3 +1,6 @@
+# AI Attribution: This file was developed with assistance from Claude (Anthropic).
+# https://claude.ai
+
 import os
 import base64
 from datetime import datetime, timedelta

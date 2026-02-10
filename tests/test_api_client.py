@@ -1,3 +1,6 @@
+# AI Attribution: This file was developed with assistance from Claude (Anthropic).
+# https://claude.ai
+
 import pytest
 from unittest.mock import Mock, patch
 from io import BytesIO

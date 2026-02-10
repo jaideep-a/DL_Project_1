@@ -1,6 +1,11 @@
+# AI Attribution: This file was developed with assistance from Claude (Anthropic).
+# https://claude.ai
+
 import os
 from dotenv import load_dotenv
 
+# load_dotenv() is called at module level so that environment variables
+# are available when the Config class attributes are initialized below.
 load_dotenv()
 
 
