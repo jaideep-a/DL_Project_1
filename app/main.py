@@ -1,6 +1,6 @@
 import os
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from .config import Config
 from .api_client import get_prediction, check_model_health, ModelAPIError
@@ -17,6 +17,10 @@ app = Flask(__name__,
             template_folder='../templates',
             static_folder='../static')
 app.secret_key = Config.SECRET_KEY
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=Config.SESSION_LIFETIME_HOURS)
+app.config['SESSION_COOKIE_SECURE'] = not Config.DEBUG  # Use secure cookies in production
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 
 # ===================== UTILITY ROUTES =====================
@@ -94,6 +98,7 @@ def hospital_login():
         hospital_id = request.form.get('hospital_id') or 'demo-hospital'
 
         # Dummy authentication - accepts any input
+        session.permanent = True  # Use configured session lifetime
         session['hospital_id'] = hospital_id
         session['hospital_name'] = 'Demo Hospital'
         return redirect(url_for('hospital_dashboard'))
