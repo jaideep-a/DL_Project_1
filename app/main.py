@@ -50,15 +50,35 @@ def hospital_dashboard():
         return redirect(url_for('hospital_login'))
 
     hospital_id = session['hospital_id']
-    hospital = get_hospital(hospital_id)
 
-    if not hospital:
-        session.clear()
-        return redirect(url_for('hospital_login'))
+    # Demo mode - provide mock hospital data
+    hospital = {
+        'id': hospital_id,
+        'name': session.get('hospital_name', 'Demo Hospital'),
+        'city': 'Demo City',
+        'state': 'Demo State',
+        'country': 'Demo Country',
+    }
 
-    # Get stats
-    stats_today = get_hospital_stats(hospital_id, days=1)
-    stats_week = get_hospital_stats(hospital_id, days=7)
+    # Mock stats for today
+    stats_today = {
+        'case_count': 127,
+        'normal_count': 95,
+        'pneumonia_count': 32,
+        'severe_count': 5,
+        'deaths': 0,
+        'avg_confidence': 0.87,
+    }
+
+    # Mock stats for week
+    stats_week = {
+        'case_count': 845,
+        'normal_count': 620,
+        'pneumonia_count': 225,
+        'severe_count': 38,
+        'deaths': 2,
+        'avg_confidence': 0.85,
+    }
 
     return render_template('hospital/dashboard.html',
         hospital=hospital,
@@ -69,19 +89,14 @@ def hospital_dashboard():
 
 @app.route('/hospital/login', methods=['GET', 'POST'])
 def hospital_login():
-    """Hospital login page."""
+    """Hospital login page - Dummy authentication for demo purposes."""
     if request.method == 'POST':
-        hospital_id = request.form.get('hospital_id')
-        api_key = request.form.get('api_key')
+        hospital_id = request.form.get('hospital_id') or 'demo-hospital'
 
-        # Simple validation (in production, use proper auth)
-        hospital = get_hospital(hospital_id)
-        if hospital and hospital.get('api_key') == api_key:
-            session['hospital_id'] = hospital_id
-            session['hospital_name'] = hospital['name']
-            return redirect(url_for('hospital_dashboard'))
-        else:
-            return render_template('hospital/login.html', error='Invalid credentials')
+        # Dummy authentication - accepts any input
+        session['hospital_id'] = hospital_id
+        session['hospital_name'] = 'Demo Hospital'
+        return redirect(url_for('hospital_dashboard'))
 
     return render_template('hospital/login.html')
 
@@ -192,14 +207,42 @@ def hospital_results(upload_id):
 def surveillance_dashboard():
     """Main surveillance dashboard - real-time outbreak tracking."""
 
-    # Get global stats
-    global_stats = get_global_stats(days=1)
+    # Demo mode - provide mock data instead of database calls
+    global_stats = {
+        'case_count': 547000000,
+        'normal_count': 420000000,
+        'pneumonia_count': 127000000,
+        'severe_count': 5470000,
+        'deaths': 2735000,
+    }
 
-    # Get regional data for map
-    regional_data = get_regional_data(region_type='country')
+    # Mock regional data for map
+    regional_data = [
+        {'region_id': 'US', 'case_count': 450000, 'severe_count': 24000},
+        {'region_id': 'IN', 'case_count': 800000, 'severe_count': 45000},
+        {'region_id': 'BR', 'case_count': 300000, 'severe_count': 18000},
+        {'region_id': 'GB', 'case_count': 142000, 'severe_count': 8500},
+        {'region_id': 'FR', 'case_count': 128000, 'severe_count': 7200},
+    ]
 
-    # Get active alerts
-    alerts = get_active_alerts()
+    # Mock active alerts
+    alerts = [
+        {
+            'severity': 'critical',
+            'region_id': 'Maharashtra, India',
+            'description': 'Surge of 15,000 new cases in 24h. Hospital capacity at 92%.'
+        },
+        {
+            'severity': 'high',
+            'region_id': 'São Paulo, Brazil',
+            'description': 'ICU occupancy reached 85%. Resource allocation recommended.'
+        },
+        {
+            'severity': 'medium',
+            'region_id': 'California, USA',
+            'description': 'Unusual cluster detected in Bay Area. 450 cases in last 48h.'
+        },
+    ]
 
     return render_template('surveillance/dashboard.html',
         global_stats=global_stats,
@@ -249,15 +292,54 @@ def surveillance_region(region_type, region_id):
 @app.route('/surveillance/alerts')
 def surveillance_alerts():
     """View all alerts."""
-    supabase = get_supabase_client()
-
-    response = supabase.table('alerts') \
-        .select('*') \
-        .order('triggered_at', desc=True) \
-        .limit(100) \
-        .execute()
-
-    alerts = response.data
+    # Demo mode - provide mock alerts
+    alerts = [
+        {
+            'id': '1',
+            'severity': 'critical',
+            'region_id': 'Maharashtra, India',
+            'alert_type': 'surge',
+            'description': 'Surge of 15,000 new cases in 24h. Hospital capacity at 92%.',
+            'triggered_at': '2026-02-10T08:30:00',
+            'resolved_at': None,
+        },
+        {
+            'id': '2',
+            'severity': 'high',
+            'region_id': 'São Paulo, Brazil',
+            'alert_type': 'capacity',
+            'description': 'ICU occupancy reached 85%. Resource allocation recommended.',
+            'triggered_at': '2026-02-10T06:15:00',
+            'resolved_at': None,
+        },
+        {
+            'id': '3',
+            'severity': 'medium',
+            'region_id': 'California, USA',
+            'alert_type': 'cluster',
+            'description': 'Unusual cluster detected in Bay Area. 450 cases in last 48h.',
+            'triggered_at': '2026-02-09T22:45:00',
+            'resolved_at': None,
+        },
+        {
+            'id': '4',
+            'severity': 'high',
+            'region_id': 'London, United Kingdom',
+            'alert_type': 'surge',
+            'description': 'Rapid increase in severe cases. 320% increase week-over-week.',
+            'triggered_at': '2026-02-09T14:20:00',
+            'resolved_at': None,
+        },
+        {
+            'id': '5',
+            'severity': 'critical',
+            'region_id': 'Jakarta, Indonesia',
+            'alert_type': 'capacity',
+            'description': 'Hospital capacity exceeded. Emergency overflow protocols activated.',
+            'triggered_at': '2026-02-09T11:00:00',
+            'resolved_at': None,
+        },
+    ]
 
     return render_template('surveillance/alerts.html', alerts=alerts)
 
@@ -265,15 +347,64 @@ def surveillance_alerts():
 @app.route('/surveillance/hospitals')
 def surveillance_hospitals():
     """View all participating hospitals and their status."""
-    hospitals = get_all_hospitals()
-
-    # Get stats for each hospital
-    hospital_data = []
-    for hospital in hospitals:
-        stats = get_hospital_stats(hospital['id'], days=1)
-        hospital['current_cases'] = stats['case_count']
-        hospital['severe_cases'] = stats['severe_count']
-        hospital_data.append(hospital)
+    # Demo mode - provide mock hospital data
+    hospital_data = [
+        {
+            'id': 'hosp-001',
+            'name': 'City General Hospital',
+            'city': 'Mumbai',
+            'state': 'Maharashtra',
+            'country': 'India',
+            'current_cases': 245,
+            'severe_cases': 18,
+            'total_beds': 500,
+            'icu_beds': 50,
+        },
+        {
+            'id': 'hosp-002',
+            'name': 'Metropolitan Medical Center',
+            'city': 'São Paulo',
+            'state': 'São Paulo',
+            'country': 'Brazil',
+            'current_cases': 312,
+            'severe_cases': 24,
+            'total_beds': 650,
+            'icu_beds': 75,
+        },
+        {
+            'id': 'hosp-003',
+            'name': 'Bay Area Regional Hospital',
+            'city': 'San Francisco',
+            'state': 'California',
+            'country': 'USA',
+            'current_cases': 89,
+            'severe_cases': 7,
+            'total_beds': 400,
+            'icu_beds': 45,
+        },
+        {
+            'id': 'hosp-004',
+            'name': 'Royal London Hospital',
+            'city': 'London',
+            'state': 'England',
+            'country': 'United Kingdom',
+            'current_cases': 156,
+            'severe_cases': 12,
+            'total_beds': 550,
+            'icu_beds': 60,
+        },
+        {
+            'id': 'hosp-005',
+            'name': 'Central Jakarta Hospital',
+            'city': 'Jakarta',
+            'state': 'Jakarta',
+            'country': 'Indonesia',
+            'current_cases': 421,
+            'severe_cases': 35,
+            'total_beds': 450,
+            'icu_beds': 40,
+        },
+    ]
 
     return render_template('surveillance/hospitals.html', hospitals=hospital_data)
 
@@ -284,7 +415,14 @@ def surveillance_hospitals():
 def api_global_stats():
     """API endpoint for global statistics."""
     days = request.args.get('days', default=1, type=int)
-    stats = get_global_stats(days=days)
+    # Demo mode - provide mock stats
+    stats = {
+        'case_count': 547000000,
+        'normal_count': 420000000,
+        'pneumonia_count': 127000000,
+        'severe_count': 5470000,
+        'deaths': 2735000,
+    }
     return jsonify(stats)
 
 
@@ -292,14 +430,38 @@ def api_global_stats():
 def api_regional_data():
     """API endpoint for regional data (for map)."""
     region_type = request.args.get('type', default='country')
-    data = get_regional_data(region_type=region_type)
+    # Demo mode - provide mock regional data
+    data = [
+        {'region_id': 'US', 'case_count': 450000, 'severe_count': 24000},
+        {'region_id': 'IN', 'case_count': 800000, 'severe_count': 45000},
+        {'region_id': 'BR', 'case_count': 300000, 'severe_count': 18000},
+        {'region_id': 'GB', 'case_count': 142000, 'severe_count': 8500},
+        {'region_id': 'FR', 'case_count': 128000, 'severe_count': 7200},
+    ]
     return jsonify(data)
 
 
 @app.route('/api/v1/alerts')
 def api_alerts():
     """API endpoint for alerts."""
-    alerts = get_active_alerts()
+    # Demo mode - provide mock alerts
+    alerts = [
+        {
+            'severity': 'critical',
+            'region_id': 'Maharashtra, India',
+            'description': 'Surge of 15,000 new cases in 24h. Hospital capacity at 92%.'
+        },
+        {
+            'severity': 'high',
+            'region_id': 'São Paulo, Brazil',
+            'description': 'ICU occupancy reached 85%. Resource allocation recommended.'
+        },
+        {
+            'severity': 'medium',
+            'region_id': 'California, USA',
+            'description': 'Unusual cluster detected in Bay Area. 450 cases in last 48h.'
+        },
+    ]
     return jsonify(alerts)
 
 
@@ -307,7 +469,15 @@ def api_alerts():
 def api_hospital_stats(hospital_id):
     """API endpoint for hospital-specific statistics."""
     days = request.args.get('days', default=1, type=int)
-    stats = get_hospital_stats(hospital_id, days=days)
+    # Demo mode - provide mock stats
+    stats = {
+        'case_count': 127 * days,
+        'normal_count': 95 * days,
+        'pneumonia_count': 32 * days,
+        'severe_count': 5 * days,
+        'deaths': 0,
+        'avg_confidence': 0.87,
+    }
     return jsonify(stats)
 
 

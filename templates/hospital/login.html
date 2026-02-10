@@ -7,100 +7,154 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         .login-container {
-            max-width: 400px;
+            max-width: 480px;
             margin: 4rem auto;
             background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
+            border: 3px solid #e8e4df;
+            animation: fadeInUp 0.6s ease-out;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .login-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
         .login-header h1 {
-            color: #1e3a5f;
-            margin-bottom: 0.5rem;
+            color: #d4746a;
+            margin-bottom: 0.75rem;
+            font-size: 2.25rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
         .login-header p {
-            color: #64748b;
-            font-size: 0.9rem;
+            color: #6b6b6b;
+            font-size: 1.05rem;
+            line-height: 1.6;
         }
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #1e3a5f;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            color: #2d2d2d;
+            font-weight: 600;
+            font-size: 1rem;
         }
         input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
+            padding: 1rem;
+            border: 2px solid #e8e4df;
+            border-radius: 8px;
             font-size: 1rem;
             box-sizing: border-box;
+            transition: all 0.3s;
         }
         input:focus {
             outline: none;
-            border-color: #4a90b8;
-            box-shadow: 0 0 0 3px rgba(74, 144, 184, 0.1);
+            border-color: #d4746a;
+            box-shadow: 0 0 0 4px rgba(212, 116, 106, 0.1);
+            transform: translateY(-2px);
+        }
+        input:hover {
+            border-color: #d4746a;
         }
         .login-btn {
             width: 100%;
-            padding: 0.875rem;
-            background: #1e3a5f;
+            padding: 1.125rem;
+            background: linear-gradient(135deg, #d4746a, #e19489);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .login-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
         .login-btn:hover {
-            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 116, 106, 0.4);
         }
         .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 0.75rem;
-            border-radius: 6px;
+            background: #f8e8e7;
+            color: #c85a54;
+            padding: 1rem;
+            border-radius: 8px;
             margin-bottom: 1.5rem;
             display: none;
+            border: 2px solid #c85a54;
         }
         .error-message.show {
             display: block;
         }
-        .test-credentials {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            border-radius: 6px;
-            padding: 1rem;
+        .demo-notice {
+            background: linear-gradient(135deg, #e8f4e7 0%, #d1fae5 100%);
+            border: 3px solid #7a9b76;
+            border-radius: 12px;
+            padding: 1.5rem;
             margin-top: 2rem;
+            box-shadow: 0 4px 12px rgba(122, 155, 118, 0.15);
         }
-        .test-credentials h3 {
-            color: #0369a1;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+        .demo-notice h3 {
+            color: #6b9b68;
+            margin-bottom: 0.75rem;
+            font-size: 1.15rem;
+            font-family: 'Playfair Display', serif;
         }
-        .test-credentials p {
-            color: #0c4a6e;
-            font-size: 0.85rem;
-            margin: 0.25rem 0;
+        .demo-notice p {
+            color: #2d2d2d;
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        .demo-notice strong {
+            color: #6b9b68;
         }
         .back-link {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
         .back-link a {
-            color: #4a90b8;
+            color: #d4746a;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
         }
         .back-link a:hover {
+            color: #b45d54;
             text-decoration: underline;
         }
     </style>
@@ -119,7 +173,7 @@
         <div class="login-container">
             <div class="login-header">
                 <h1>Hospital Portal</h1>
-                <p>Sign in to upload and analyze X-rays</p>
+                <p>Access the dashboard to upload and analyze X-rays</p>
             </div>
 
             {% if error %}
@@ -128,22 +182,19 @@
 
             <form method="POST">
                 <div class="form-group">
-                    <label for="hospital_id">Hospital ID (UUID)</label>
-                    <input type="text" id="hospital_id" name="hospital_id" required placeholder="Enter your hospital ID">
+                    <label for="hospital_id">Hospital Name (Optional)</label>
+                    <input type="text" id="hospital_id" name="hospital_id" placeholder="e.g., City General Hospital">
                 </div>
 
-                <div class="form-group">
-                    <label for="api_key">API Key</label>
-                    <input type="password" id="api_key" name="api_key" required placeholder="Enter your API key">
-                </div>
-
-                <button type="submit" class="login-btn">Sign In</button>
+                <button type="submit" class="login-btn">
+                    <span style="position: relative; z-index: 1;">Access Dashboard →</span>
+                </button>
             </form>
 
-            <div class="test-credentials">
-                <h3>🧪 Test Credentials</h3>
-                <p><strong>For testing:</strong> Check your Supabase database table "hospitals" for valid Hospital ID and API Key combinations.</p>
-                <p style="margin-top: 0.5rem;">Default hospitals have been pre-populated in the database.</p>
+            <div class="demo-notice">
+                <h3>✨ Demo Mode</h3>
+                <p><strong>No authentication required!</strong> This is a demonstration system. Simply click "Access Dashboard" to enter.</p>
+                <p style="margin-top: 0.75rem;">You can optionally enter a hospital name for personalization.</p>
             </div>
 
             <div class="back-link">

@@ -8,44 +8,59 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .dashboard-header {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
-            color: white;
+            background: linear-gradient(135deg, #f9e4e1 0%, #f9f1e8 100%);
+            color: #2d2d2d;
             padding: 2rem;
             margin-bottom: 2rem;
-            border-radius: 8px;
+            border-radius: 12px;
+            border: 3px solid #d4746a;
+            box-shadow: 0 8px 24px rgba(212, 116, 106, 0.15);
+            animation: fadeInUp 0.6s ease-out;
         }
         .dashboard-header h1 {
             margin: 0 0 0.5rem 0;
             font-size: 2rem;
+            color: #d4746a;
+            font-family: 'Playfair Display', serif;
         }
         .dashboard-header p {
             margin: 0;
-            opacity: 0.9;
+            color: #2d2d2d;
+            opacity: 0.85;
         }
         .hospital-info {
-            background: #f8fafc;
+            background: #faf8f5;
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 12px;
             margin-bottom: 2rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
+            border: 2px solid #e8e4df;
         }
         .info-card {
             background: white;
             padding: 1rem;
-            border-radius: 6px;
-            border-left: 4px solid #4a90b8;
+            border-radius: 8px;
+            border-left: 4px solid #d4746a;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.15);
         }
         .info-label {
-            color: #64748b;
+            color: #6b6b6b;
             font-size: 0.85rem;
             margin-bottom: 0.25rem;
+            font-weight: 600;
         }
         .info-value {
-            color: #1e3a5f;
-            font-weight: 600;
+            color: #d4746a;
+            font-weight: 700;
             font-size: 1.25rem;
+            font-family: 'Playfair Display', serif;
         }
         .stats-grid {
             display: grid;
@@ -56,31 +71,41 @@
         .stat-card {
             background: white;
             padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid #4a90b8;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
+            border: 2px solid #e8e4df;
+            border-top: 4px solid #d4746a;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(212, 116, 106, 0.15);
         }
         .stat-card h3 {
-            color: #64748b;
+            color: #6b6b6b;
             font-size: 0.85rem;
             text-transform: uppercase;
             margin: 0 0 0.5rem 0;
+            font-weight: 600;
         }
         .stat-value {
-            color: #1e3a5f;
+            color: #d4746a;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
+            font-family: 'Playfair Display', serif;
         }
         .stat-change {
             font-size: 0.85rem;
-            color: #64748b;
+            color: #6b6b6b;
+            font-weight: 500;
         }
         .stat-change.up {
-            color: #dc2626;
+            color: #d4746a;
         }
         .stat-change.down {
-            color: #059669;
+            color: #7a9b76;
         }
         .actions {
             display: grid;
@@ -90,85 +115,128 @@
         }
         .action-btn {
             padding: 1rem;
-            background: #1e3a5f;
+            background: linear-gradient(135deg, #d4746a, #e19489);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 500;
-            transition: background 0.2s;
+            font-weight: 600;
+            transition: all 0.3s;
             text-decoration: none;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
         .action-btn:hover {
-            background: #2d5a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 116, 106, 0.4);
         }
         .action-btn.secondary {
-            background: #4a90b8;
+            background: linear-gradient(135deg, #7a9b76, #8fb08b);
+            box-shadow: 0 4px 12px rgba(122, 155, 118, 0.3);
         }
         .action-btn.secondary:hover {
-            background: #5aa3d0;
+            box-shadow: 0 6px 20px rgba(122, 155, 118, 0.4);
         }
         .chart-container {
             background: white;
             padding: 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 2rem;
+            border: 2px solid #e8e4df;
+            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
+            transition: all 0.3s ease;
+        }
+        .chart-container:hover {
+            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
         }
         .chart-container h2 {
-            color: #1e3a5f;
+            color: #d4746a;
             margin: 0 0 1rem 0;
             font-size: 1.25rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
         .recent-uploads {
             background: white;
             padding: 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
+            border: 2px solid #e8e4df;
+            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
+            transition: all 0.3s ease;
+        }
+        .recent-uploads:hover {
+            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
         }
         .recent-uploads h2 {
-            color: #1e3a5f;
+            color: #d4746a;
             margin: 0 0 1rem 0;
             font-size: 1.25rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th {
-            background: #f8fafc;
+            background: #faf8f5;
             padding: 0.75rem;
             text-align: left;
-            color: #64748b;
+            color: #6b6b6b;
             font-weight: 600;
             font-size: 0.85rem;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid #e8e4df;
         }
         td {
             padding: 0.75rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e8e4df;
+            color: #2d2d2d;
         }
         tr:hover {
-            background: #f8fafc;
+            background: #faf8f5;
         }
         .badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .badge.normal {
-            background: #d1fae5;
-            color: #065f46;
+            background: #e8f4e7;
+            color: #6b9b68;
+            border: 2px solid #7a9b76;
         }
         .badge.pneumonia {
-            background: #fef3c7;
-            color: #92400e;
+            background: #fef3e4;
+            color: #e8a87c;
+            border: 2px solid #e8a87c;
         }
         .badge.severe {
-            background: #fee2e2;
-            color: #7f1d1d;
+            background: #f8e8e7;
+            color: #d4746a;
+            border: 2px solid #d4746a;
         }
         .user-menu {
             position: fixed;
@@ -176,16 +244,23 @@
             right: 1rem;
             background: white;
             padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.12);
+            border: 2px solid #e8e4df;
+            transition: all 0.3s ease;
+        }
+        .user-menu:hover {
+            box-shadow: 0 6px 16px rgba(212, 116, 106, 0.15);
         }
         .user-menu a {
-            color: #4a90b8;
+            color: #d4746a;
             text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         .user-menu a:hover {
-            text-decoration: underline;
+            color: #b45d54;
         }
     </style>
 </head>
@@ -331,17 +406,19 @@
                 datasets: [{
                     label: 'Cases',
                     data: [12, 19, 15, 25, 22, 30, 28],
-                    borderColor: '#1e3a5f',
-                    backgroundColor: 'rgba(30, 58, 95, 0.1)',
+                    borderColor: '#d4746a',
+                    backgroundColor: 'rgba(212, 116, 106, 0.1)',
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    borderWidth: 3
                 }, {
                     label: 'Severe Cases',
                     data: [2, 3, 2, 4, 3, 5, 4],
-                    borderColor: '#dc2626',
-                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    borderColor: '#e8a87c',
+                    backgroundColor: 'rgba(232, 168, 124, 0.1)',
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    borderWidth: 3
                 }]
             },
             options: {
