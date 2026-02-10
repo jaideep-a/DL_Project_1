@@ -63,14 +63,36 @@ def hospital_dashboard():
 
     hospital_id = session['hospital_id']
 
-    # Demo mode - provide mock hospital data
-    hospital = {
-        'id': hospital_id,
-        'name': session.get('hospital_name', 'Demo Hospital'),
-        'city': 'Demo City',
-        'state': 'Demo State',
-        'country': 'Demo Country',
+    # Hospital data lookup
+    hospital_data = {
+        'sitaram-hospital': {
+            'id': 'sitaram-hospital',
+            'name': 'Sitaram Hospital',
+            'city': 'Mumbai',
+            'state': 'Maharashtra',
+            'country': 'India',
+            'total_beds': 350,
+            'icu_beds': 42,
+            'occupied_beds': 289,
+            'occupied_icu': 36,
+            'latitude': '19.0176',
+            'longitude': '72.8562',
+        },
     }
+
+    hospital = hospital_data.get(hospital_id, {
+        'id': hospital_id,
+        'name': session.get('hospital_name', hospital_id),
+        'city': 'Mumbai',
+        'state': 'Maharashtra',
+        'country': 'India',
+        'total_beds': 350,
+        'icu_beds': 42,
+        'occupied_beds': 289,
+        'occupied_icu': 36,
+        'latitude': '19.0176',
+        'longitude': '72.8562',
+    })
 
     # Mock stats for today
     stats_today = {
@@ -92,10 +114,21 @@ def hospital_dashboard():
         'avg_confidence': 0.85,
     }
 
+    # Calculate beds required based on current pneumonia cases and severity
+    beds_available = hospital['total_beds'] - hospital['occupied_beds']
+    icu_available = hospital['icu_beds'] - hospital['occupied_icu']
+    # Estimate additional beds needed: severe cases need ICU, pneumonia cases need general beds
+    new_beds_required = max(0, stats_today['pneumonia_count'] - beds_available)
+    new_icu_required = max(0, stats_today['severe_count'] - icu_available)
+
     return render_template('hospital/dashboard.html',
         hospital=hospital,
         stats_today=stats_today,
-        stats_week=stats_week
+        stats_week=stats_week,
+        beds_available=beds_available,
+        icu_available=icu_available,
+        new_beds_required=new_beds_required,
+        new_icu_required=new_icu_required
     )
 
 
@@ -103,12 +136,17 @@ def hospital_dashboard():
 def hospital_login():
     """Hospital login page - Dummy authentication for demo purposes."""
     if request.method == 'POST':
-        hospital_id = request.form.get('hospital_id') or 'demo-hospital'
+        hospital_id = request.form.get('hospital_id') or 'sitaram-hospital'
+
+        # Hospital lookup for demo mode
+        hospitals = {
+            'sitaram-hospital': 'Sitaram Hospital',
+        }
 
         # Dummy authentication - accepts any input
         session.permanent = True  # Use configured session lifetime
         session['hospital_id'] = hospital_id
-        session['hospital_name'] = 'Demo Hospital'
+        session['hospital_name'] = hospitals.get(hospital_id, hospital_id)
         return redirect(url_for('hospital_dashboard'))
 
     return render_template('hospital/login.html')

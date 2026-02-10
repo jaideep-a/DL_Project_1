@@ -278,14 +278,43 @@
             <div class="info-card">
                 <div class="info-label">Total Beds</div>
                 <div class="info-value">{{ hospital.total_beds }}</div>
+                <div style="color: #64748b; font-size: 0.8rem; margin-top: 0.25rem;">{{ hospital.occupied_beds }} occupied &bull; {{ beds_available }} available</div>
             </div>
             <div class="info-card">
                 <div class="info-label">ICU Beds</div>
                 <div class="info-value">{{ hospital.icu_beds }}</div>
+                <div style="color: #64748b; font-size: 0.8rem; margin-top: 0.25rem;">{{ hospital.occupied_icu }} occupied &bull; {{ icu_available }} available</div>
             </div>
             <div class="info-card">
                 <div class="info-label">Location</div>
                 <div class="info-value">{{ hospital.latitude }}, {{ hospital.longitude }}</div>
+                <div style="color: #64748b; font-size: 0.8rem; margin-top: 0.25rem;">{{ hospital.city }}, {{ hospital.state }}</div>
+            </div>
+        </div>
+
+        <div style="background: white; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #e2e8f0; border-top: 3px solid #dc2626;">
+            <h2 style="color: #dc2626; font-size: 1.1rem; font-weight: 700; margin: 0 0 1rem 0;">Bed Capacity Forecast</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; border-left: 3px solid #dc2626;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">New General Beds Required</div>
+                    <div style="color: #dc2626; font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem;">+{{ new_beds_required }}</div>
+                    <div style="color: #64748b; font-size: 0.8rem;">Based on {{ stats_today.pneumonia_count }} pneumonia cases today</div>
+                </div>
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; border-left: 3px solid #dc2626;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">New ICU Beds Required</div>
+                    <div style="color: #dc2626; font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem;">+{{ new_icu_required }}</div>
+                    <div style="color: #64748b; font-size: 0.8rem;">Based on {{ stats_today.severe_count }} severe cases today</div>
+                </div>
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 6px; border-left: 3px solid #d97706;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Occupancy Rate</div>
+                    <div style="color: #d97706; font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem;">{{ ((hospital.occupied_beds / hospital.total_beds) * 100)|round(1) }}%</div>
+                    <div style="color: #64748b; font-size: 0.8rem;">{{ hospital.occupied_beds }}/{{ hospital.total_beds }} beds in use</div>
+                </div>
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 6px; border-left: 3px solid #d97706;">
+                    <div style="color: #64748b; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">ICU Occupancy Rate</div>
+                    <div style="color: #d97706; font-size: 1.5rem; font-weight: 700; margin-top: 0.25rem;">{{ ((hospital.occupied_icu / hospital.icu_beds) * 100)|round(1) }}%</div>
+                    <div style="color: #64748b; font-size: 0.8rem;">{{ hospital.occupied_icu }}/{{ hospital.icu_beds }} ICU beds in use</div>
+                </div>
             </div>
         </div>
 
