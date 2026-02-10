@@ -395,65 +395,6 @@
                     <div class="preview-container" id="previewContainer"></div>
                 </div>
 
-                <div class="section">
-                    <h2>Patient Information</h2>
-                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">
-                        All information is anonymized and compliant with HIPAA/GDPR. No personal identifiers are stored.
-                    </p>
-
-                    <div class="form-group">
-                        <label for="ageRange">Age Range</label>
-                        <select id="ageRange" name="age_range">
-                            <option value="unknown">Not specified</option>
-                            <option value="0-18">0-18 years</option>
-                            <option value="18-35">18-35 years</option>
-                            <option value="35-60">35-60 years</option>
-                            <option value="60+">60+ years</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender">
-                            <option value="Unknown">Not specified</option>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="vaccination">Vaccination Status</label>
-                        <select id="vaccination" name="vaccination_status">
-                            <option value="unknown">Unknown</option>
-                            <option value="vaccinated">Fully Vaccinated</option>
-                            <option value="unvaccinated">Unvaccinated</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Symptoms (select all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="fever" name="symptoms" value="fever">
-                                <label for="fever">Fever</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="cough" name="symptoms" value="cough">
-                                <label for="cough">Cough</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="shortness" name="symptoms" value="shortness_of_breath">
-                                <label for="shortness">Shortness of Breath</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="fatigue" name="symptoms" value="fatigue">
-                                <label for="fatigue">Fatigue</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="button-group">
                     <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Analyze Images</button>
@@ -482,11 +423,10 @@
                 <h3 style="color: #0e4f8b; margin: 0 0 0.5rem 0; font-size: 1rem;">How It Works</h3>
                 <ol style="color: #0c4a6e; margin: 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.8;">
                     <li>Upload one or more chest X-ray images</li>
-                    <li>Enter patient information (optional, anonymized)</li>
                     <li>Click "Analyze Images"</li>
                     <li>AI analyzes each image in 2-5 seconds</li>
-                    <li>View results with confidence scores and heatmaps</li>
-                    <li>Data is automatically added to surveillance dashboard</li>
+                    <li>View results with confidence scores and clinical analysis</li>
+                    <li>No images or patient data are stored — results are shown in real-time only</li>
                 </ol>
             </div>
         </div>
@@ -576,13 +516,29 @@
         function renderResults(results) {
             resultsContainer.innerHTML = '';
             results.forEach((result, index) => {
+                const card = document.createElement('div');
+                card.className = 'result-inline-card';
+
+                // Handle skipped or error results
+                if (result.status === 'error' || result.status === 'skipped') {
+                    card.innerHTML = `
+                        <h4>Image #${index + 1} — ${result.filename || 'Unknown'}</h4>
+                        <div style="color: #dc2626; background: #fef2f2; padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                            ${result.error || 'Analysis failed. Please try again.'}
+                        </div>
+                    `;
+                    resultsContainer.appendChild(card);
+                    return;
+                }
+
                 const predClass = result.prediction === 'PNEUMONIA' ? 'pneumonia' : 'normal';
                 const severityClass = result.severity || 'mild';
                 const confidence = (result.confidence * 100).toFixed(1);
-                const card = document.createElement('div');
-                card.className = 'result-inline-card';
-                card.innerHTML = `
-                    <h4>Image #${index + 1}</h4>
+                const isFallback = result.source === 'fallback';
+
+                let html = `
+                    <h4>Image #${index + 1} — ${result.filename || 'Chest X-Ray'}</h4>
+                    ${isFallback ? '<div style="background:#fef3c7; color:#92400e; padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem; margin-bottom:0.75rem;">Note: AI model API is currently unavailable. Showing simulated analysis for demo purposes.</div>' : ''}
                     <span class="result-prediction-tag ${predClass}">${result.prediction}</span>
                     <span class="severity-tag ${severityClass}">${severityClass.charAt(0).toUpperCase() + severityClass.slice(1)}</span>
                     <div class="confidence-bar-inline">
@@ -594,8 +550,35 @@
                             <div class="progress-fill-inline" style="width: ${confidence}%"></div>
                         </div>
                     </div>
-                    ${result.processing_time_ms ? `<div class="result-meta-inline">Analyzed in ${result.processing_time_ms}ms</div>` : ''}
                 `;
+
+                // Show clinical analysis
+                if (result.analysis) {
+                    const analysisBg = result.prediction === 'PNEUMONIA' ? '#fef2f2' : '#ecfdf5';
+                    const analysisColor = result.prediction === 'PNEUMONIA' ? '#7f1d1d' : '#065f46';
+                    const analysisBorder = result.prediction === 'PNEUMONIA' ? '#fecaca' : '#a7f3d0';
+                    html += `
+                        <div style="margin-top:1rem; padding:1rem; background:${analysisBg}; border:1px solid ${analysisBorder}; border-radius:6px;">
+                            <div style="font-weight:600; color:${analysisColor}; margin-bottom:0.5rem; font-size:0.9rem;">Clinical Analysis</div>
+                            <div style="color:${analysisColor}; font-size:0.85rem; line-height:1.6;">${result.analysis}</div>
+                        </div>
+                    `;
+                }
+
+                // Show probabilities if available
+                if (result.probabilities && Object.keys(result.probabilities).length > 0) {
+                    html += `<div style="margin-top:0.75rem; font-size:0.8rem; color:#64748b;">`;
+                    for (const [label, prob] of Object.entries(result.probabilities)) {
+                        html += `<span style="margin-right:1rem;">${label}: ${(prob * 100).toFixed(1)}%</span>`;
+                    }
+                    html += `</div>`;
+                }
+
+                if (result.processing_time_ms) {
+                    html += `<div class="result-meta-inline">Analyzed in ${result.processing_time_ms}ms | Model: ${result.model_version || 'v1.0'}</div>`;
+                }
+
+                card.innerHTML = html;
                 resultsContainer.appendChild(card);
             });
             resultsInline.classList.add('show');
@@ -614,14 +597,6 @@
             const formData = new FormData();
             selectedFiles.forEach(file => {
                 formData.append('images', file);
-            });
-
-            // Add metadata
-            document.querySelectorAll('select').forEach(select => {
-                formData.append(select.name, select.value);
-            });
-            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
-                formData.append('symptoms', checkbox.value);
             });
 
             try {
@@ -645,9 +620,14 @@
                 if (response.ok) {
                     const succeeded = (data.results || []).filter(r => r.status === 'success').length;
                     const skipped = (data.results || []).filter(r => r.status === 'skipped').length;
-                    statusMessage.textContent = skipped
-                        ? `Analyzed ${succeeded} image(s). ${skipped} skipped.`
-                        : `Successfully analyzed ${succeeded} image(s).`;
+                    const fallbackCount = (data.results || []).filter(r => r.source === 'fallback').length;
+
+                    let msg = `Successfully analyzed ${succeeded} image(s).`;
+                    if (skipped) msg += ` ${skipped} skipped.`;
+                    if (fallbackCount > 0 && fallbackCount === succeeded) {
+                        msg += ' (Demo mode — AI model API unavailable)';
+                    }
+                    statusMessage.textContent = msg;
                     statusMessage.className = 'status-message success';
 
                     // Show results inline
