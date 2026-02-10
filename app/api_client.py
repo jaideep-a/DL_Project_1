@@ -48,18 +48,21 @@ def get_prediction(image_file):
     try:
         # Reset file pointer in case it was read before
         image_file.seek(0)
-        
+
         files = {'image': (image_file.filename, image_file, image_file.content_type)}
         headers = {}
-        
+
         if Config.MODEL_API_KEY:
             headers['Authorization'] = f'Bearer {Config.MODEL_API_KEY}'
-        
+
+        # Use longer timeout to handle Render free-tier cold starts (up to 60s)
+        timeout = max(Config.API_TIMEOUT_SECONDS, 60)
+
         resp = requests.post(
             Config.MODEL_API_URL,
             files=files,
             headers=headers,
-            timeout=Config.API_TIMEOUT_SECONDS
+            timeout=timeout
         )
         
         if resp.status_code != 200:
