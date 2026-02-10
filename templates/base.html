@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chest X-Ray Pneumonia Detection Tool - Upload chest X-ray images for AI-powered pneumonia analysis">
-    <title>{% block title %}Pneumonia Detection{% endblock %}</title>
+    <meta name="description" content="MediAlert - AI-Powered Pandemic Surveillance for India">
+    <title>{% block title %}MediAlert{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="{{ url_for('index') }}" class="logo">
-                <span class="logo-icon">🫁</span>
-                <span class="logo-text">PneumoScan</span>
+    <header class="header" style="background: #0e4f8b; padding: 0.875rem 2rem;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <a href="{{ url_for('index') }}" class="logo" style="color: white; text-decoration: none; font-size: 1.25rem; font-weight: 700;">
+                MediAlert
             </a>
         </div>
     </header>
 
     <main class="main">
-        <div class="container">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
             {% block content %}{% endblock %}
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="disclaimer">
-                <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only. 
-                It is not intended for clinical diagnosis. Always consult qualified healthcare professionals 
+    <footer class="footer" style="background: #1e293b; color: #94a3b8; padding: 1.5rem; text-align: center;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <div class="disclaimer" style="margin-bottom: 0.75rem; font-size: 0.85rem;">
+                <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only.
+                It is not intended for clinical diagnosis. Always consult qualified healthcare professionals
                 for medical advice and diagnosis.
             </div>
-            <div class="footer-info">
+            <div class="footer-info" style="font-size: 0.8rem; color: #64748b;">
                 <p>Built for educational purposes. Images are not stored after processing.</p>
-                <p>Data source: Chest X-Ray Images (Pneumonia) dataset</p>
+                <p>&copy; 2026 MediAlert India. AI-Powered Pandemic Surveillance System.</p>
             </div>
         </div>
     </footer>

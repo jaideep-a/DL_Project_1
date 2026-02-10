@@ -6,326 +6,374 @@
     <title>Analysis Results - MediAlert</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .results-navbar {
+            background: #0e4f8b;
+            padding: 0.875rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-navbar a.logo-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .results-navbar-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .results-navbar-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .results-navbar-links a:hover { color: white; }
+
+        .results-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         .results-header {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            background: linear-gradient(135deg, #0a3d6b 0%, #0e4f8b 100%);
             color: white;
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 8px;
         }
-        .results-container {
-            max-width: 1000px;
-            margin: 0 auto;
+
+        .results-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
         }
+
+        .results-header p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
         .result-card {
             background: white;
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
         }
+
+        .result-card h2 {
+            color: #0e4f8b;
+            margin: 0 0 1rem 0;
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
         .result-item {
             display: grid;
             grid-template-columns: auto 1fr;
             gap: 1.5rem;
             padding: 1.5rem 0;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #f1f5f9;
         }
-        .result-item:last-child {
-            border-bottom: none;
-        }
+
+        .result-item:last-child { border-bottom: none; }
+
         .result-image {
             width: 120px;
             height: 120px;
             background: #f8fafc;
             border-radius: 6px;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 2rem;
+            border: 1px solid #e2e8f0;
         }
-        .result-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
+        .result-image img { width: 100%; height: 100%; object-fit: cover; }
+
         .result-content h3 {
-            color: #1e3a5f;
+            color: #0e4f8b;
             margin: 0 0 0.5rem 0;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
+
         .result-prediction {
             display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.85rem;
             border-radius: 6px;
             font-weight: 600;
+            font-size: 0.85rem;
             margin-bottom: 0.75rem;
         }
-        .result-prediction.normal {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .result-prediction.pneumonia {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        .result-prediction.uncertain {
-            background: #e5e7eb;
-            color: #374151;
-        }
-        .confidence-bar {
-            margin: 0.75rem 0;
-        }
+
+        .result-prediction.normal { background: #ecfdf5; color: #065f46; }
+        .result-prediction.pneumonia { background: #fef3c7; color: #92400e; }
+        .result-prediction.uncertain { background: #f1f5f9; color: #374151; }
+
+        .confidence-bar { margin: 0.75rem 0; }
+
         .confidence-label {
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.25rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #64748b;
         }
+
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: #e2e8f0;
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
         }
+
         .progress-fill {
             height: 100%;
-            background: #4a90b8;
-            border-radius: 4px;
-            transition: width 0.3s ease;
+            background: #0e4f8b;
+            border-radius: 3px;
         }
+
         .result-meta {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #64748b;
             margin-top: 0.5rem;
         }
+
         .severity-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
             font-size: 0.75rem;
             font-weight: 600;
             margin-left: 0.5rem;
         }
-        .severity-badge.mild {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .severity-badge.moderate {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        .severity-badge.severe {
-            background: #fee2e2;
-            color: #7f1d1d;
-        }
+
+        .severity-badge.mild { background: #ecfdf5; color: #065f46; }
+        .severity-badge.moderate { background: #fef3c7; color: #92400e; }
+        .severity-badge.severe { background: #fef2f2; color: #7f1d1d; }
+
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
+
         .summary-stat {
             background: #f8fafc;
             padding: 1rem;
             border-radius: 6px;
             text-align: center;
-            border-left: 4px solid #4a90b8;
+            border-left: 3px solid #0e4f8b;
         }
+
         .summary-stat .label {
             color: #64748b;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: 0.25rem;
         }
+
         .summary-stat .value {
-            color: #1e3a5f;
+            color: #0e4f8b;
             font-size: 1.5rem;
             font-weight: 700;
         }
+
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
         }
+
         .btn {
             padding: 0.75rem 1rem;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
             text-align: center;
             transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .btn-primary {
-            background: #1e3a5f;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #2d5a8a;
-        }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e3a5f;
-        }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
+
+        .btn-primary { background: #0e4f8b; color: white; }
+        .btn-primary:hover { background: #0a3d6b; }
+        .btn-secondary { background: #e2e8f0; color: #1e293b; }
+        .btn-secondary:hover { background: #cbd5e1; }
+
         .disclaimer {
             background: #fef3c7;
             border: 1px solid #fcd34d;
             border-radius: 6px;
             padding: 1rem;
             color: #92400e;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-top: 1.5rem;
         }
+
         .empty-message {
             text-align: center;
             padding: 2rem;
             color: #64748b;
         }
-        .empty-message p {
-            margin-bottom: 1rem;
+
+        .empty-message p { margin-bottom: 1rem; }
+
+        .results-footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-icon">🏥</span>
-                <span>MediAlert</span>
-            </a>
+    <nav class="results-navbar">
+        <a href="/" class="logo-link">MediAlert</a>
+        <div class="results-navbar-links">
+            <a href="/hospital/dashboard">Dashboard</a>
+            <a href="/hospital/upload">Upload</a>
+            <a href="/surveillance">India Dashboard</a>
         </div>
-    </header>
+    </nav>
 
-    <main class="main">
-        <div class="container results-container">
-            <div class="results-header">
-                <h1>📋 Analysis Results</h1>
-                <p>Review AI-powered pneumonia detection results</p>
-            </div>
+    <div class="results-container">
+        <div class="results-header">
+            <h1>Analysis Results</h1>
+            <p>Review AI-powered pneumonia detection results</p>
+        </div>
 
-            {% if analyses %}
-            <!-- Summary Statistics -->
-            <div class="result-card">
-                <h2 style="color: #1e3a5f; margin: 0 0 1rem 0;">Summary</h2>
-                <div class="summary-grid">
-                    <div class="summary-stat">
-                        <div class="label">Total Images</div>
-                        <div class="value">{{ analyses|length }}</div>
-                    </div>
-                    <div class="summary-stat">
-                        <div class="label">Pneumonia Cases</div>
-                        <div class="value">{{ analyses|selectattr('ai_prediction', 'equalto', 'PNEUMONIA')|list|length }}</div>
-                    </div>
-                    <div class="summary-stat">
-                        <div class="label">Normal Cases</div>
-                        <div class="value">{{ analyses|selectattr('ai_prediction', 'equalto', 'NORMAL')|list|length }}</div>
-                    </div>
-                    <div class="summary-stat">
-                        <div class="label">Avg Confidence</div>
-                        <div class="value">{{ (analyses|map(attribute='confidence')|sum / (analyses|length))|round(2) * 100 }}%</div>
-                    </div>
+        {% if analyses %}
+        <div class="result-card">
+            <h2>Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-stat">
+                    <div class="label">Total Images</div>
+                    <div class="value">{{ analyses|length }}</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="label">Pneumonia Cases</div>
+                    <div class="value">{{ analyses|selectattr('ai_prediction', 'equalto', 'PNEUMONIA')|list|length }}</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="label">Normal Cases</div>
+                    <div class="value">{{ analyses|selectattr('ai_prediction', 'equalto', 'NORMAL')|list|length }}</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="label">Avg Confidence</div>
+                    <div class="value">{{ (analyses|map(attribute='confidence')|sum / (analyses|length))|round(2) * 100 }}%</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Individual Results -->
-            <div class="result-card">
-                <h2 style="color: #1e3a5f; margin: 0 0 1.5rem 0;">Detailed Results</h2>
+        <div class="result-card">
+            <h2>Detailed Results</h2>
 
-                {% for analysis in analyses %}
-                <div class="result-item">
-                    <div class="result-image">
-                        <div style="width: 100%; height: 100%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
-                            📷
+            {% for analysis in analyses %}
+            <div class="result-item">
+                <div class="result-image">
+                    <span>&#128247;</span>
+                </div>
+
+                <div class="result-content">
+                    <h3>Image #{{ loop.index }}</h3>
+
+                    <div>
+                        <span class="result-prediction {% if analysis.ai_prediction == 'PNEUMONIA' %}pneumonia{% elif analysis.ai_prediction == 'NORMAL' %}normal{% else %}uncertain{% endif %}">
+                            {{ analysis.ai_prediction }}
+                        </span>
+                        <span class="severity-badge {{ analysis.severity }}">
+                            {{ analysis.severity|capitalize }}
+                        </span>
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="confidence-label">
+                            <span>Confidence Score</span>
+                            <span>{{ (analysis.confidence * 100)|round(1) }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ analysis.confidence * 100 }}%"></div>
                         </div>
                     </div>
 
-                    <div class="result-content">
-                        <h3>Image #{{ loop.index }}</h3>
-
-                        <div>
-                            <span class="result-prediction {% if analysis.ai_prediction == 'PNEUMONIA' %}pneumonia{% elif analysis.ai_prediction == 'NORMAL' %}normal{% else %}uncertain{% endif %}">
-                                {{ analysis.ai_prediction }}
-                            </span>
-                            <span class="severity-badge {{ analysis.severity }}">
-                                {{ analysis.severity|capitalize }}
-                            </span>
-                        </div>
-
-                        <div class="confidence-bar">
-                            <div class="confidence-label">
-                                <span>Confidence Score</span>
-                                <span>{{ (analysis.confidence * 100)|round(1) }}%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: {{ analysis.confidence * 100 }}%"></div>
-                            </div>
-                        </div>
-
-                        <div class="result-meta">
-                            {% if analysis.processing_time_ms %}
-                            ⏱️ Analyzed in {{ analysis.processing_time_ms }}ms
-                            {% endif %}
-                            {% if analysis.model_version %}
-                            | Model: {{ analysis.model_version }}
-                            {% endif %}
-                        </div>
-
-                        {% if analysis.confidence < 0.6 %}
-                        <div style="background: #fee2e2; color: #7f1d1d; padding: 0.5rem; border-radius: 4px; margin-top: 0.75rem; font-size: 0.85rem;">
-                            ⚠️ Lower confidence: Consider expert review
-                        </div>
+                    <div class="result-meta">
+                        {% if analysis.processing_time_ms %}
+                        Analyzed in {{ analysis.processing_time_ms }}ms
+                        {% endif %}
+                        {% if analysis.model_version %}
+                        | Model: {{ analysis.model_version }}
                         {% endif %}
                     </div>
-                </div>
-                {% endfor %}
-            </div>
 
-            <!-- Clinical Recommendations -->
-            <div class="result-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #0369a1;">
-                <h2 style="color: #0369a1; margin: 0 0 1rem 0;">📋 Clinical Guidance</h2>
-                <ul style="color: #0c4a6e; margin: 0; padding-left: 1.5rem;">
-                    <li><strong>Always verify:</strong> AI predictions should be confirmed by qualified radiologists</li>
-                    <li><strong>Consider context:</strong> Clinical presentation and patient history are critical</li>
-                    <li><strong>Follow protocols:</strong> Adhere to your hospital's diagnostic procedures</li>
-                    <li><strong>Low confidence:</strong> Images with < 60% confidence require expert review</li>
-                </ul>
-            </div>
-
-            <!-- Actions -->
-            <div class="action-buttons">
-                <a href="/hospital/upload" class="btn btn-primary">📤 Analyze More</a>
-                <a href="/hospital/dashboard" class="btn btn-secondary">📊 Back to Dashboard</a>
-                <a href="/surveillance" class="btn btn-secondary">🌍 Global Dashboard</a>
-            </div>
-
-            <div class="disclaimer">
-                <strong>⚠️ Medical Disclaimer:</strong> MediAlert is for educational and research purposes only.
-                AI predictions are not a substitute for professional medical diagnosis. Always consult qualified healthcare professionals.
-            </div>
-
-            {% else %}
-            <div class="result-card">
-                <div class="empty-message">
-                    <p style="font-size: 3rem;">📭</p>
-                    <p>No analysis results found.</p>
-                    <a href="/hospital/upload" class="btn btn-primary">Start by uploading X-rays</a>
+                    {% if analysis.confidence < 0.6 %}
+                    <div style="background: #fef2f2; color: #7f1d1d; padding: 0.5rem; border-radius: 4px; margin-top: 0.75rem; font-size: 0.8rem;">
+                        Lower confidence: Consider expert review
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
-    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Hospital Portal</p>
+        <div class="result-card" style="background: #f0f9ff; border-left: 4px solid #0e4f8b;">
+            <h2 style="color: #0e4f8b;">Clinical Guidance</h2>
+            <ul style="color: #0c4a6e; margin: 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.8;">
+                <li><strong>Always verify:</strong> AI predictions should be confirmed by qualified radiologists</li>
+                <li><strong>Consider context:</strong> Clinical presentation and patient history are critical</li>
+                <li><strong>Follow protocols:</strong> Adhere to your hospital's diagnostic procedures</li>
+                <li><strong>Low confidence:</strong> Images with &lt; 60% confidence require expert review</li>
+            </ul>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/hospital/upload" class="btn btn-primary">Analyze More</a>
+            <a href="/hospital/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+            <a href="/surveillance" class="btn btn-secondary">India Dashboard</a>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Medical Disclaimer:</strong> MediAlert is for educational and research purposes only.
+            AI predictions are not a substitute for professional medical diagnosis. Always consult qualified healthcare professionals.
+        </div>
+
+        {% else %}
+        <div class="result-card">
+            <div class="empty-message">
+                <p style="font-size: 1.25rem; color: #94a3b8;">No results found</p>
+                <p>No analysis results found.</p>
+                <a href="/hospital/upload" class="btn btn-primary">Start by uploading X-rays</a>
             </div>
         </div>
-    </footer>
+        {% endif %}
+    </div>
+
+    <div class="results-footer">
+        <p>&copy; 2026 MediAlert Hospital Portal</p>
+    </div>
 </body>
 </html>

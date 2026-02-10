@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Error - Pneumonia Detection{% endblock %}
+{% block title %}Error - MediAlert{% endblock %}
 
 {% block content %}
-<div class="error-page">
-    <div class="error-icon">
+<div class="error-page" style="text-align: center; padding: 3rem 1rem;">
+    <div class="error-icon" style="color: #dc2626; margin-bottom: 1.5rem;">
         <svg viewBox="0 0 24 24" width="64" height="64">
             <path fill="currentColor"
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
         </svg>
     </div>
 
-    <h1>Something Went Wrong</h1>
+    <h1 style="color: #0e4f8b; font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; font-family: 'Inter', sans-serif;">Something Went Wrong</h1>
 
-    <p class="error-message">{{ error }}</p>
+    <p class="error-message" style="color: #64748b; font-size: 1rem; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">{{ error }}</p>
 
     <div class="error-actions">
-        <a href="{{ url_for('index') }}" class="btn-analyze">Try Again</a>
+        <a href="{{ url_for('index') }}" style="display: inline-block; background: #0e4f8b; color: white; padding: 0.75rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; font-family: 'Inter', sans-serif;">Try Again</a>
     </div>
 </div>
 {% endblock %}

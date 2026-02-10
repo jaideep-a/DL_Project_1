@@ -7,397 +7,370 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .dash-navbar {
+            background: #0e4f8b;
+            padding: 0.875rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-navbar a.logo-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .dash-navbar a.logout-link {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .dash-navbar a.logout-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dash-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         .dashboard-header {
-            background: linear-gradient(135deg, #f9e4e1 0%, #f9f1e8 100%);
-            color: #2d2d2d;
+            background: linear-gradient(135deg, #0a3d6b 0%, #0e4f8b 100%);
+            color: white;
             padding: 2rem;
             margin-bottom: 2rem;
-            border-radius: 12px;
-            border: 3px solid #d4746a;
-            box-shadow: 0 8px 24px rgba(212, 116, 106, 0.15);
-            animation: fadeInUp 0.6s ease-out;
+            border-radius: 10px;
         }
+
         .dashboard-header h1 {
             margin: 0 0 0.5rem 0;
-            font-size: 2rem;
-            color: #d4746a;
-            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: white;
+            font-weight: 700;
         }
+
         .dashboard-header p {
             margin: 0;
-            color: #2d2d2d;
-            opacity: 0.85;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
         }
+
         .hospital-info {
-            background: #faf8f5;
+            background: white;
             padding: 1rem;
-            border-radius: 12px;
+            border-radius: 8px;
             margin-bottom: 2rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
-            border: 2px solid #e8e4df;
+            border: 1px solid #e2e8f0;
         }
+
         .info-card {
-            background: white;
+            background: #f8fafc;
             padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #d4746a;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            border-radius: 6px;
+            border-left: 3px solid #0e4f8b;
         }
-        .info-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.15);
-        }
+
         .info-label {
-            color: #6b6b6b;
-            font-size: 0.85rem;
+            color: #64748b;
+            font-size: 0.8rem;
             margin-bottom: 0.25rem;
             font-weight: 600;
+            text-transform: uppercase;
         }
+
         .info-value {
-            color: #d4746a;
+            color: #0e4f8b;
             font-weight: 700;
-            font-size: 1.25rem;
-            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
         }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            gap: 1.25rem;
             margin-bottom: 2rem;
         }
+
         .stat-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
-            border: 2px solid #e8e4df;
-            border-top: 4px solid #d4746a;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            border-top: 3px solid #0e4f8b;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(212, 116, 106, 0.15);
-        }
+
         .stat-card h3 {
-            color: #6b6b6b;
-            font-size: 0.85rem;
+            color: #64748b;
+            font-size: 0.8rem;
             text-transform: uppercase;
             margin: 0 0 0.5rem 0;
             font-weight: 600;
         }
+
         .stat-value {
-            color: #d4746a;
-            font-size: 2rem;
+            color: #0e4f8b;
+            font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
-            font-family: 'Playfair Display', serif;
         }
+
         .stat-change {
-            font-size: 0.85rem;
-            color: #6b6b6b;
+            font-size: 0.8rem;
+            color: #64748b;
             font-weight: 500;
         }
-        .stat-change.up {
-            color: #d4746a;
-        }
-        .stat-change.down {
-            color: #7a9b76;
-        }
+
+        .stat-change.up { color: #dc2626; }
+        .stat-change.down { color: #059669; }
+
         .actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-bottom: 2rem;
         }
+
         .action-btn {
-            padding: 1rem;
-            background: linear-gradient(135deg, #d4746a, #e19489);
+            padding: 0.875rem;
+            background: #0e4f8b;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: background 0.2s;
             text-decoration: none;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.3);
-            position: relative;
-            overflow: hidden;
+            font-family: 'Inter', sans-serif;
         }
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        .action-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 116, 106, 0.4);
-        }
+
+        .action-btn:hover { background: #0a3d6b; }
+
         .action-btn.secondary {
-            background: linear-gradient(135deg, #7a9b76, #8fb08b);
-            box-shadow: 0 4px 12px rgba(122, 155, 118, 0.3);
+            background: #0d9488;
         }
+
         .action-btn.secondary:hover {
-            box-shadow: 0 6px 20px rgba(122, 155, 118, 0.4);
+            background: #0b7c72;
         }
+
         .chart-container {
             background: white;
             padding: 1.5rem;
-            border-radius: 12px;
+            border-radius: 8px;
             margin-bottom: 2rem;
-            border: 2px solid #e8e4df;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
-            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
         }
-        .chart-container:hover {
-            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
-        }
+
         .chart-container h2 {
-            color: #d4746a;
+            color: #0e4f8b;
             margin: 0 0 1rem 0;
-            font-size: 1.25rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
+            font-size: 1.15rem;
+            font-weight: 600;
         }
+
         .recent-uploads {
             background: white;
             padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid #e8e4df;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
-        .recent-uploads:hover {
-            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
-        }
+
         .recent-uploads h2 {
-            color: #d4746a;
+            color: #0e4f8b;
             margin: 0 0 1rem 0;
-            font-size: 1.25rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
+            font-size: 1.15rem;
+            font-weight: 600;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
         th {
-            background: #faf8f5;
+            background: #f8fafc;
             padding: 0.75rem;
             text-align: left;
-            color: #6b6b6b;
+            color: #64748b;
             font-weight: 600;
-            font-size: 0.85rem;
-            border-bottom: 2px solid #e8e4df;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e2e8f0;
         }
+
         td {
             padding: 0.75rem;
-            border-bottom: 1px solid #e8e4df;
-            color: #2d2d2d;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+            font-size: 0.9rem;
         }
-        tr:hover {
-            background: #faf8f5;
-        }
+
+        tr:hover { background: #f8fafc; }
+
         .badge {
             display: inline-block;
-            padding: 0.35rem 0.85rem;
+            padding: 0.3rem 0.75rem;
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
+
         .badge.normal {
-            background: #e8f4e7;
-            color: #6b9b68;
-            border: 2px solid #7a9b76;
+            background: #ecfdf5;
+            color: #059669;
         }
+
         .badge.pneumonia {
-            background: #fef3e4;
-            color: #e8a87c;
-            border: 2px solid #e8a87c;
+            background: #fef3c7;
+            color: #d97706;
         }
+
         .badge.severe {
-            background: #f8e8e7;
-            color: #d4746a;
-            border: 2px solid #d4746a;
+            background: #fef2f2;
+            color: #dc2626;
         }
-        .user-menu {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            background: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.12);
-            border: 2px solid #e8e4df;
-            transition: all 0.3s ease;
-        }
-        .user-menu:hover {
-            box-shadow: 0 6px 16px rgba(212, 116, 106, 0.15);
-        }
-        .user-menu a {
-            color: #d4746a;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .user-menu a:hover {
-            color: #b45d54;
+
+        .dash-footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-icon">🏥</span>
-                <span>MediAlert</span>
-            </a>
-        </div>
-    </header>
+    <nav class="dash-navbar">
+        <a href="/" class="logo-link">MediAlert</a>
+        <a href="/hospital/logout" class="logout-link">Logout</a>
+    </nav>
 
-    <div class="user-menu">
-        <a href="/hospital/logout">Logout</a>
+    <div class="dash-container">
+        <div class="dashboard-header">
+            <h1>{{ hospital.name }}</h1>
+            <p>Hospital Dashboard &bull; {{ hospital.city }}, {{ hospital.state }} &bull; {{ hospital.country }}</p>
+        </div>
+
+        <div class="hospital-info">
+            <div class="info-card">
+                <div class="info-label">Total Beds</div>
+                <div class="info-value">{{ hospital.total_beds }}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">ICU Beds</div>
+                <div class="info-value">{{ hospital.icu_beds }}</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Location</div>
+                <div class="info-value">{{ hospital.latitude }}, {{ hospital.longitude }}</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Cases Today</h3>
+                <div class="stat-value">{{ stats_today.case_count }}</div>
+                <div class="stat-change {% if stats_today.case_count > stats_week.case_count %}up{% else %}down{% endif %}">
+                    {% if stats_today.case_count > 0 %}+3.2% vs avg{% else %}No cases yet{% endif %}
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Severe Cases</h3>
+                <div class="stat-value">{{ stats_today.severe_count }}</div>
+                <div class="stat-change">{{ ((stats_today.severe_count / stats_today.case_count * 100) if stats_today.case_count > 0 else 0)|round(1) }}% of total</div>
+            </div>
+            <div class="stat-card">
+                <h3>Normal Cases</h3>
+                <div class="stat-value">{{ stats_today.normal_count }}</div>
+                <div class="stat-change down">Negative results</div>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Confidence</h3>
+                <div class="stat-value">{{ (stats_today.avg_confidence * 100)|round(0)|int }}%</div>
+                <div class="stat-change">AI model accuracy</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/hospital/upload" class="action-btn">Upload X-Rays</a>
+            <a href="/hospital/results/latest" class="action-btn secondary">View Results</a>
+            <a href="/surveillance" class="action-btn secondary">India Dashboard</a>
+        </div>
+
+        <div class="chart-container">
+            <h2>Cases This Week</h2>
+            <canvas id="casesChart" height="100"></canvas>
+        </div>
+
+        <div class="recent-uploads">
+            <h2>Recent Analyses</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Result</th>
+                        <th>Confidence</th>
+                        <th>Severity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Today 2:45 PM</td>
+                        <td>Pneumonia</td>
+                        <td>87%</td>
+                        <td><span class="badge pneumonia">Moderate</span></td>
+                    </tr>
+                    <tr>
+                        <td>Today 1:20 PM</td>
+                        <td>Normal</td>
+                        <td>92%</td>
+                        <td><span class="badge normal">Mild</span></td>
+                    </tr>
+                    <tr>
+                        <td>Today 11:10 AM</td>
+                        <td>Pneumonia</td>
+                        <td>76%</td>
+                        <td><span class="badge severe">Severe</span></td>
+                    </tr>
+                    <tr>
+                        <td>Yesterday 4:30 PM</td>
+                        <td>Normal</td>
+                        <td>88%</td>
+                        <td><span class="badge normal">Mild</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <main class="main">
-        <div class="container">
-            <div class="dashboard-header">
-                <h1>{{ hospital.name }}</h1>
-                <p>Hospital Dashboard • {{ hospital.city }}, {{ hospital.state }} • {{ hospital.country }}</p>
-            </div>
-
-            <div class="hospital-info">
-                <div class="info-card">
-                    <div class="info-label">Total Beds</div>
-                    <div class="info-value">{{ hospital.total_beds }}</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">ICU Beds</div>
-                    <div class="info-value">{{ hospital.icu_beds }}</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Location</div>
-                    <div class="info-value">{{ hospital.latitude }}, {{ hospital.longitude }}</div>
-                </div>
-            </div>
-
-            <!-- Quick Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Cases Today</h3>
-                    <div class="stat-value">{{ stats_today.case_count }}</div>
-                    <div class="stat-change {% if stats_today.case_count > stats_week.case_count %}up{% else %}down{% endif %}">
-                        {% if stats_today.case_count > 0 %}↑ 3.2% vs avg{% else %}No cases yet{% endif %}
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <h3>Severe Cases</h3>
-                    <div class="stat-value">{{ stats_today.severe_count }}</div>
-                    <div class="stat-change">{{ ((stats_today.severe_count / stats_today.case_count * 100) if stats_today.case_count > 0 else 0)|round(1) }}% of total</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Normal Cases</h3>
-                    <div class="stat-value">{{ stats_today.normal_count }}</div>
-                    <div class="stat-change down">↓ Negative results</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Avg Confidence</h3>
-                    <div class="stat-value">{{ (stats_today.avg_confidence * 100)|round(0)|int }}%</div>
-                    <div class="stat-change">AI model accuracy</div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="actions">
-                <a href="/hospital/upload" class="action-btn">
-                    📤 Upload X-Rays
-                </a>
-                <a href="/hospital/results/latest" class="action-btn secondary">
-                    📊 View Results
-                </a>
-                <a href="/surveillance" class="action-btn secondary">
-                    🌍 Global Dashboard
-                </a>
-            </div>
-
-            <!-- Charts -->
-            <div class="chart-container">
-                <h2>Cases This Week</h2>
-                <canvas id="casesChart" height="100"></canvas>
-            </div>
-
-            <!-- Recent Uploads -->
-            <div class="recent-uploads">
-                <h2>📋 Recent Analyses</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Result</th>
-                            <th>Confidence</th>
-                            <th>Severity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Today 2:45 PM</td>
-                            <td>Pneumonia</td>
-                            <td>87%</td>
-                            <td><span class="badge pneumonia">Moderate</span></td>
-                        </tr>
-                        <tr>
-                            <td>Today 1:20 PM</td>
-                            <td>Normal</td>
-                            <td>92%</td>
-                            <td><span class="badge normal">Mild</span></td>
-                        </tr>
-                        <tr>
-                            <td>Today 11:10 AM</td>
-                            <td>Pneumonia</td>
-                            <td>76%</td>
-                            <td><span class="badge severe">Severe</span></td>
-                        </tr>
-                        <tr>
-                            <td>Yesterday 4:30 PM</td>
-                            <td>Normal</td>
-                            <td>88%</td>
-                            <td><span class="badge normal">Mild</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Hospital Portal</p>
-            </div>
-        </div>
-    </footer>
+    <div class="dash-footer">
+        <p>&copy; 2026 MediAlert Hospital Portal</p>
+    </div>
 
     <script>
-        // Sample chart data
         const ctx = document.getElementById('casesChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
@@ -406,32 +379,28 @@
                 datasets: [{
                     label: 'Cases',
                     data: [12, 19, 15, 25, 22, 30, 28],
-                    borderColor: '#d4746a',
-                    backgroundColor: 'rgba(212, 116, 106, 0.1)',
+                    borderColor: '#0e4f8b',
+                    backgroundColor: 'rgba(14, 79, 139, 0.08)',
                     tension: 0.4,
                     fill: true,
-                    borderWidth: 3
+                    borderWidth: 2
                 }, {
                     label: 'Severe Cases',
                     data: [2, 3, 2, 4, 3, 5, 4],
-                    borderColor: '#e8a87c',
-                    backgroundColor: 'rgba(232, 168, 124, 0.1)',
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 38, 0.06)',
                     tension: 0.4,
                     fill: true,
-                    borderWidth: 3
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'top'
-                    }
+                    legend: { position: 'top' }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+                    y: { beginAtZero: true }
                 }
             }
         });

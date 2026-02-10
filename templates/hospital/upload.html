@@ -6,74 +6,143 @@
     <title>Upload X-Rays - MediAlert</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .upload-navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.875rem 0;
+            z-index: 1000;
+        }
+
+        .upload-navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upload-navbar a.logo-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0e4f8b;
+        }
+
+        .upload-nav-links {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .upload-nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .upload-nav-links a:hover {
+            color: #0e4f8b;
+            background: #f0f9ff;
+        }
+
+        .upload-nav-links a.active {
+            color: #0e4f8b;
+            background: #f0f9ff;
+        }
+
         .upload-header {
-            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            background: linear-gradient(135deg, #0a3d6b 0%, #0e4f8b 100%);
             color: white;
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 8px;
         }
+
+        .upload-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .upload-header p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+        }
+
         .upload-container {
             max-width: 700px;
             margin: 0 auto;
         }
+
         .section {
             background: white;
             padding: 2rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
         }
+
         .section h2 {
-            color: #1e3a5f;
+            color: #0e4f8b;
             margin: 0 0 1.5rem 0;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
+            font-weight: 600;
         }
+
         .dropzone {
             border: 2px dashed #cbd5e1;
             border-radius: 8px;
             padding: 2rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: border-color 0.2s, background 0.2s;
             background: #f8fafc;
         }
+
         .dropzone:hover {
-            border-color: #4a90b8;
+            border-color: #0e4f8b;
             background: #f0f9ff;
         }
+
         .dropzone.dragover {
-            border-color: #4a90b8;
-            background: #dbeafe;
-            box-shadow: 0 0 0 3px rgba(74, 144, 184, 0.1);
+            border-color: #0e4f8b;
+            background: #e0f2fe;
         }
-        .dropzone-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        .dropzone-text {
-            color: #1e3a5f;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        .dropzone-subtext {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .dropzone-formats {
-            color: #94a3b8;
-            font-size: 0.85rem;
-        }
-        #fileInput {
-            display: none;
-        }
+
+        .dropzone-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .dropzone-text { color: #0e4f8b; font-weight: 600; margin-bottom: 0.25rem; }
+        .dropzone-subtext { color: #64748b; font-size: 0.9rem; margin-bottom: 1rem; }
+        .dropzone-formats { color: #94a3b8; font-size: 0.85rem; }
+
+        #fileInput { display: none; }
+
         .preview-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 1rem;
             margin-top: 1rem;
         }
+
         .preview-item {
             position: relative;
             background: #f8fafc;
@@ -81,11 +150,9 @@
             overflow: hidden;
             aspect-ratio: 1;
         }
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+
         .preview-remove {
             position: absolute;
             top: 0.5rem;
@@ -102,55 +169,48 @@
             align-items: center;
             justify-content: center;
         }
-        .preview-remove:hover {
-            background: #dc2626;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+
+        .preview-remove:hover { background: #dc2626; }
+
+        .form-group { margin-bottom: 1.5rem; }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #1e3a5f;
+            color: #1e293b;
             font-weight: 500;
             font-size: 0.9rem;
         }
-        select, input {
+
+        select, input[type="text"] {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             font-size: 0.95rem;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
-        select:focus, input:focus {
+
+        select:focus, input[type="text"]:focus {
             outline: none;
-            border-color: #4a90b8;
-            box-shadow: 0 0 0 3px rgba(74, 144, 184, 0.1);
+            border-color: #0e4f8b;
+            box-shadow: 0 0 0 3px rgba(14, 79, 139, 0.1);
         }
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-        }
-        .checkbox-item input {
-            width: auto;
-            margin-right: 0.5rem;
-        }
-        .checkbox-item label {
-            margin: 0;
-            font-weight: normal;
-        }
+
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+        .checkbox-item { display: flex; align-items: center; }
+        .checkbox-item input { width: auto; margin-right: 0.5rem; }
+        .checkbox-item label { margin: 0; font-weight: normal; }
+
         .button-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin-top: 2rem;
         }
+
         .btn {
             padding: 0.875rem;
             border: none;
@@ -159,25 +219,15 @@
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .btn-primary {
-            background: #1e3a5f;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #2d5a8a;
-        }
-        .btn-primary:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-        }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #1e3a5f;
-        }
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
+
+        .btn-primary { background: #0e4f8b; color: white; }
+        .btn-primary:hover { background: #0a3d6b; }
+        .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .btn-secondary { background: #e2e8f0; color: #1e293b; }
+        .btn-secondary:hover { background: #cbd5e1; }
+
         .disclaimer-box {
             background: #fef3c7;
             border: 1px solid #fcd34d;
@@ -187,90 +237,166 @@
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
         }
+
         .status-message {
             padding: 1rem;
             border-radius: 6px;
             margin-top: 1rem;
             display: none;
         }
-        .status-message.success {
-            background: #d1fae5;
-            color: #065f46;
-            display: block;
-        }
-        .status-message.error {
-            background: #fee2e2;
-            color: #7f1d1d;
-            display: block;
-        }
+
+        .status-message.success { background: #ecfdf5; color: #065f46; display: block; }
+        .status-message.error { background: #fef2f2; color: #7f1d1d; display: block; }
+
         .loading {
             display: none;
             text-align: center;
-            color: #4a90b8;
+            color: #0e4f8b;
             margin-top: 1rem;
         }
+
         .spinner {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid #4a90b8;
+            border: 3px solid #0e4f8b;
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
             margin-right: 0.5rem;
+            vertical-align: middle;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .results-inline {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .results-inline.show { display: block; }
+
+        .result-inline-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-inline-card h4 {
+            color: #0e4f8b;
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .result-prediction-tag {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+        }
+
+        .result-prediction-tag.normal { background: #ecfdf5; color: #065f46; }
+        .result-prediction-tag.pneumonia { background: #fef3c7; color: #92400e; }
+
+        .severity-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .severity-tag.mild { background: #ecfdf5; color: #065f46; }
+        .severity-tag.moderate { background: #fef3c7; color: #92400e; }
+        .severity-tag.severe { background: #fef2f2; color: #7f1d1d; }
+
+        .confidence-bar-inline {
+            margin-top: 0.75rem;
+        }
+
+        .confidence-label-inline {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .progress-bar-inline {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill-inline {
+            height: 100%;
+            background: #0e4f8b;
+            border-radius: 3px;
+        }
+
+        .result-meta-inline {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .upload-footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <nav style="position: sticky; top: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; padding: 1rem 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none; font-size: 1.5rem; font-weight: 700; color: #2563eb;">
-                <span style="font-size: 2rem;">🏥</span>
-                <span>MediAlert</span>
-            </a>
-            <div style="display: flex; gap: 1.5rem; align-items: center;">
-                <a href="/hospital/dashboard" style="text-decoration: none; color: #4b5563; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px;">Dashboard</a>
-                <a href="/hospital/upload" style="text-decoration: none; color: #2563eb; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; background: #eff6ff;">Upload X-rays</a>
-                <a href="/surveillance" style="text-decoration: none; color: #4b5563; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px;">India Dashboard</a>
+    <nav class="upload-navbar">
+        <div class="upload-navbar-inner">
+            <a href="/" class="logo-link">MediAlert</a>
+            <div class="upload-nav-links">
+                <a href="/hospital/dashboard">Dashboard</a>
+                <a href="/hospital/upload" class="active">Upload X-rays</a>
+                <a href="/surveillance">India Dashboard</a>
             </div>
         </div>
     </nav>
 
-    <main class="main">
-        <div class="container upload-container">
+    <main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <div class="upload-container">
             <div class="upload-header">
                 <h1>Upload X-Ray Images</h1>
                 <p>Drag and drop chest X-ray images for AI analysis</p>
             </div>
 
             <div class="disclaimer-box">
-                <strong>⚠️ Medical Disclaimer:</strong> MediAlert is for educational and research purposes only.
+                <strong>Medical Disclaimer:</strong> MediAlert is for educational and research purposes only.
                 AI predictions should be reviewed by qualified radiologists.
             </div>
 
             <form id="uploadForm">
-                <!-- Upload Section -->
                 <div class="section">
-                    <h2>📤 Select Images</h2>
+                    <h2>Select Images</h2>
 
                     <div class="dropzone" id="dropzone">
-                        <div class="dropzone-icon">☁️</div>
+                        <div class="dropzone-icon">&#9729;</div>
                         <div class="dropzone-text">Drag and drop files here</div>
                         <div class="dropzone-subtext">or click to browse</div>
                         <div class="dropzone-formats">Supported: JPG, PNG (max 10MB each)</div>
                     </div>
 
                     <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png">
-
                     <div class="preview-container" id="previewContainer"></div>
                 </div>
 
-                <!-- Patient Information Section -->
                 <div class="section">
-                    <h2>👤 Patient Information</h2>
+                    <h2>Patient Information</h2>
                     <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem;">
                         All information is anonymized and compliant with HIPAA/GDPR. No personal identifiers are stored.
                     </p>
@@ -328,14 +454,9 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        ← Cancel
-                    </button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
-                        Analyze Images
-                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Analyze Images</button>
                 </div>
 
                 <div class="loading" id="loading">
@@ -346,9 +467,20 @@
                 <div class="status-message" id="statusMessage"></div>
             </form>
 
-            <div class="section" style="margin-top: 2rem; background: #f0f9ff; border-left: 4px solid #0369a1;">
-                <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;">ℹ️ How It Works</h3>
-                <ol style="color: #0c4a6e; margin: 0; padding-left: 1.5rem;">
+            <div class="results-inline" id="resultsInline">
+                <div class="section">
+                    <h2>Analysis Results</h2>
+                    <div id="resultsContainer"></div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <a href="/hospital/upload" class="btn btn-primary" style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Analyze More Images</a>
+                        <a href="/hospital/dashboard" class="btn btn-secondary" style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 2rem; background: #f0f9ff; border-left: 4px solid #0e4f8b;">
+                <h3 style="color: #0e4f8b; margin: 0 0 0.5rem 0; font-size: 1rem;">How It Works</h3>
+                <ol style="color: #0c4a6e; margin: 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.8;">
                     <li>Upload one or more chest X-ray images</li>
                     <li>Enter patient information (optional, anonymized)</li>
                     <li>Click "Analyze Images"</li>
@@ -360,13 +492,9 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Hospital Portal</p>
-            </div>
-        </div>
-    </footer>
+    <div class="upload-footer">
+        <p>&copy; 2026 MediAlert Hospital Portal</p>
+    </div>
 
     <script>
         const dropzone = document.getElementById('dropzone');
@@ -376,6 +504,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const statusMessage = document.getElementById('statusMessage');
         const loading = document.getElementById('loading');
+        const resultsInline = document.getElementById('resultsInline');
+        const resultsContainer = document.getElementById('resultsContainer');
         let selectedFiles = [];
 
         // Dropzone events
@@ -425,7 +555,7 @@
                     preview.className = 'preview-item';
                     preview.innerHTML = `
                         <img src="${e.target.result}" alt="Preview ${index}">
-                        <button type="button" class="preview-remove" onclick="removeFile(${index})">✕</button>
+                        <button type="button" class="preview-remove" onclick="removeFile(${index})">&#10005;</button>
                     `;
                     previewContainer.appendChild(preview);
                 };
@@ -443,6 +573,34 @@
             submitBtn.disabled = selectedFiles.length === 0;
         }
 
+        function renderResults(results) {
+            resultsContainer.innerHTML = '';
+            results.forEach((result, index) => {
+                const predClass = result.prediction === 'PNEUMONIA' ? 'pneumonia' : 'normal';
+                const severityClass = result.severity || 'mild';
+                const confidence = (result.confidence * 100).toFixed(1);
+                const card = document.createElement('div');
+                card.className = 'result-inline-card';
+                card.innerHTML = `
+                    <h4>Image #${index + 1}</h4>
+                    <span class="result-prediction-tag ${predClass}">${result.prediction}</span>
+                    <span class="severity-tag ${severityClass}">${severityClass.charAt(0).toUpperCase() + severityClass.slice(1)}</span>
+                    <div class="confidence-bar-inline">
+                        <div class="confidence-label-inline">
+                            <span>Confidence</span>
+                            <span>${confidence}%</span>
+                        </div>
+                        <div class="progress-bar-inline">
+                            <div class="progress-fill-inline" style="width: ${confidence}%"></div>
+                        </div>
+                    </div>
+                    ${result.processing_time_ms ? `<div class="result-meta-inline">Analyzed in ${result.processing_time_ms}ms</div>` : ''}
+                `;
+                resultsContainer.appendChild(card);
+            });
+            resultsInline.classList.add('show');
+        }
+
         uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -450,6 +608,8 @@
 
             loading.style.display = 'block';
             submitBtn.disabled = true;
+            statusMessage.className = 'status-message';
+            resultsInline.classList.remove('show');
 
             const formData = new FormData();
             selectedFiles.forEach(file => {
@@ -470,12 +630,11 @@
                     body: formData
                 });
 
-                // Check if response is JSON or HTML (redirect to login)
-                const contentType = response.headers.get('content-type');
+                const data = await response.json();
 
-                if (contentType && contentType.includes('text/html')) {
-                    // Redirected to login page
-                    statusMessage.textContent = '✗ Session expired. Please log in again.';
+                if (response.status === 401) {
+                    // Session expired - server returns JSON 401
+                    statusMessage.textContent = 'Session expired. Please log in again.';
                     statusMessage.className = 'status-message error';
                     setTimeout(() => {
                         window.location.href = '/hospital/login';
@@ -483,25 +642,24 @@
                     return;
                 }
 
-                const data = await response.json();
-
                 if (response.ok) {
-                    statusMessage.textContent = `✓ Successfully analyzed ${selectedFiles.length} image(s)!`;
+                    statusMessage.textContent = 'Successfully analyzed ' + selectedFiles.length + ' image(s).';
                     statusMessage.className = 'status-message success';
+
+                    // Show results inline
+                    if (data.results && data.results.length > 0) {
+                        renderResults(data.results);
+                    }
+
                     selectedFiles = [];
                     previewContainer.innerHTML = '';
                     updateSubmitBtn();
-
-                    // Redirect to results after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = `/hospital/results/${data.upload_id}`;
-                    }, 2000);
                 } else {
-                    statusMessage.textContent = '✗ Error: ' + (data.error || 'Failed to analyze images. Please try again.');
+                    statusMessage.textContent = 'Error: ' + (data.error || 'Failed to analyze images.');
                     statusMessage.className = 'status-message error';
                 }
             } catch (error) {
-                statusMessage.textContent = '✗ Error: ' + error.message;
+                statusMessage.textContent = 'Network error. Please check your connection and try again.';
                 statusMessage.className = 'status-message error';
             } finally {
                 loading.style.display = 'none';

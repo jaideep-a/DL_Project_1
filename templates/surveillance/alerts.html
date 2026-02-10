@@ -6,228 +6,325 @@
     <title>Alerts - MediAlert Surveillance</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .alerts-navbar {
+            background: #0e4f8b;
+            padding: 0.875rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alerts-navbar a.logo-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .alerts-navbar-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .alerts-navbar-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .alerts-navbar-links a:hover { color: white; }
+
+        .alerts-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
+
         .header-section h1 {
-            color: #1e3a5f;
+            color: #0e4f8b;
             margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
+
+        .header-section p {
+            color: #64748b;
+            margin: 0.4rem 0 0 0;
+            font-size: 0.9rem;
+        }
+
+        .header-section a {
+            color: #0e4f8b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .header-section a:hover { text-decoration: underline; }
+
         .alert-item {
             background: white;
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 1rem;
-            border-left: 4px solid #0369a1;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-left: 3px solid #0e4f8b;
+            border: 1px solid #e2e8f0;
+            border-left: 3px solid #0e4f8b;
         }
+
         .alert-item.critical {
             border-left-color: #dc2626;
             background: #fff5f5;
         }
+
         .alert-item.high {
             border-left-color: #d97706;
             background: #fffbf0;
         }
+
         .alert-item.medium {
-            border-left-color: #0369a1;
+            border-left-color: #0e4f8b;
             background: #f0f9ff;
         }
+
         .alert-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 0.75rem;
         }
+
         .alert-region {
             font-weight: 600;
-            color: #1e3a5f;
-            font-size: 1.1rem;
+            color: #1e293b;
+            font-size: 1rem;
         }
+
         .alert-badge {
             display: inline-block;
-            padding: 0.4rem 0.8rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 4px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
         }
-        .alert-badge.critical {
-            background: #dc2626;
-            color: white;
-        }
-        .alert-badge.high {
-            background: #d97706;
-            color: white;
-        }
-        .alert-badge.medium {
-            background: #0369a1;
-            color: white;
-        }
+
+        .alert-badge.critical { background: #dc2626; color: white; }
+        .alert-badge.high { background: #d97706; color: white; }
+        .alert-badge.medium { background: #0e4f8b; color: white; }
+
         .alert-description {
             color: #475569;
             margin-bottom: 0.75rem;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
+
         .alert-meta {
             display: flex;
             gap: 1.5rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #64748b;
         }
+
         .alert-action {
-            color: #0369a1;
+            color: #0e4f8b;
             cursor: pointer;
             text-decoration: none;
             font-weight: 500;
         }
-        .alert-action:hover {
-            text-decoration: underline;
+
+        .alert-action:hover { text-decoration: underline; }
+
+        .info-box {
+            background: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border: 1px solid #bae6fd;
+        }
+
+        .info-box h3 {
+            color: #0e4f8b;
+            margin: 0 0 0.75rem 0;
+            font-size: 1.05rem;
+        }
+
+        .severity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .severity-item-label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .severity-item-desc {
+            margin: 0;
+            color: #475569;
+            font-size: 0.85rem;
+        }
+
+        .alerts-footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 2rem;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-icon">🏥</span>
-                <span>MediAlert</span>
-            </a>
+    <nav class="alerts-navbar">
+        <a href="/" class="logo-link">MediAlert</a>
+        <div class="alerts-navbar-links">
+            <a href="/">Home</a>
+            <a href="/surveillance">India Dashboard</a>
+            <a href="/hospital/login">Hospital Login</a>
         </div>
-    </header>
+    </nav>
 
-    <main class="main">
-        <div class="container">
-            <div class="header-section">
-                <div>
-                    <h1>🚨 Active Alerts</h1>
-                    <p style="color: #64748b; margin: 0.5rem 0 0 0;">Real-time outbreak and surge notifications</p>
-                </div>
-                <a href="/surveillance" style="color: #4a90b8; text-decoration: none;">← Back to Dashboard</a>
-            </div>
-
-            <!-- Alert Items -->
+    <div class="alerts-container">
+        <div class="header-section">
             <div>
-                <div class="alert-item critical">
-                    <div class="alert-header">
-                        <span class="alert-region">Delhi, India - ICU Capacity Critical</span>
-                        <span class="alert-badge critical">CRITICAL</span>
-                    </div>
-                    <div class="alert-description">
-                        ICU bed occupancy has reached 98%. Hospital capacity at critical threshold. Recommend immediate transfer of non-critical patients and request for ventilator reinforcements.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 2 hours ago</span>
-                        <span>📍 12 hospitals affected</span>
-                        <span class="alert-action">View region →</span>
-                    </div>
-                </div>
+                <h1>Active Alerts</h1>
+                <p>Real-time outbreak and surge notifications</p>
+            </div>
+            <a href="/surveillance">Back to Dashboard</a>
+        </div>
 
-                <div class="alert-item high">
-                    <div class="alert-header">
-                        <span class="alert-region">New York, USA - Case Surge Detected</span>
-                        <span class="alert-badge high">HIGH</span>
-                    </div>
-                    <div class="alert-description">
-                        Cases increased by 85% in the past 24 hours. Trend shows accelerating growth. Peak prediction: 5,000+ cases/day within 3-5 days.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 5 hours ago</span>
-                        <span>📊 89,000 cumulative cases</span>
-                        <span class="alert-action">View trend analysis →</span>
-                    </div>
+        <div>
+            <div class="alert-item critical">
+                <div class="alert-header">
+                    <span class="alert-region">Delhi, India - ICU Capacity Critical</span>
+                    <span class="alert-badge critical">CRITICAL</span>
                 </div>
-
-                <div class="alert-item high">
-                    <div class="alert-header">
-                        <span class="alert-region">São Paulo, Brazil - Resource Shortage</span>
-                        <span class="alert-badge high">HIGH</span>
-                    </div>
-                    <div class="alert-description">
-                        Oxygen supply expected to be depleted in 2 days at current consumption rate. Ventilator availability at 15%. Recommend immediate procurement and supply redistribution.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 8 hours ago</span>
-                        <span>🏥 45 hospitals reporting shortage</span>
-                        <span class="alert-action">Resource allocation →</span>
-                    </div>
+                <div class="alert-description">
+                    ICU bed occupancy has reached 98%. Hospital capacity at critical threshold. Recommend immediate transfer of non-critical patients and request for ventilator reinforcements.
                 </div>
-
-                <div class="alert-item medium">
-                    <div class="alert-header">
-                        <span class="alert-region">Los Angeles, USA - Moderate Surge</span>
-                        <span class="alert-badge medium">MEDIUM</span>
-                    </div>
-                    <div class="alert-description">
-                        Cases increased by 42% compared to 7-day average. Monitor situation. Current resources appear adequate for next 48-72 hours.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 12 hours ago</span>
-                        <span>📈 1,200 new cases today</span>
-                        <span class="alert-action">Monitor →</span>
-                    </div>
-                </div>
-
-                <div class="alert-item medium">
-                    <div class="alert-header">
-                        <span class="alert-region">Mumbai, India - New Cluster Detected</span>
-                        <span class="alert-badge medium">MEDIUM</span>
-                    </div>
-                    <div class="alert-description">
-                        Unusual cluster of cases detected in specific district. 23 new cases in past 6 hours from area with previously low case count. Recommend targeted surveillance.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 1 hour ago</span>
-                        <span>🔍 Under investigation</span>
-                        <span class="alert-action">Investigate cluster →</span>
-                    </div>
-                </div>
-
-                <div class="alert-item medium">
-                    <div class="alert-header">
-                        <span class="alert-region">London, UK - Severity Increase</span>
-                        <span class="alert-badge medium">MEDIUM</span>
-                    </div>
-                    <div class="alert-description">
-                        Proportion of severe cases increased from 5% to 12% in past 5 days. May indicate new variant or demographic shift. Recommend genomic sequencing.
-                    </div>
-                    <div class="alert-meta">
-                        <span>⏰ Triggered 18 hours ago</span>
-                        <span>🔬 Likely new variant</span>
-                        <span class="alert-action">Variant analysis →</span>
-                    </div>
+                <div class="alert-meta">
+                    <span>Triggered 2 hours ago</span>
+                    <span>12 hospitals affected</span>
+                    <span class="alert-action">View region</span>
                 </div>
             </div>
 
-            <!-- Info Box -->
-            <div style="background: #f0f9ff; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; border-left: 4px solid #0369a1;">
-                <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;">ℹ️ Alert Severity Levels</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                    <div>
-                        <div style="font-weight: 600; color: #dc2626; margin-bottom: 0.25rem;">🔴 CRITICAL</div>
-                        <p style="margin: 0; color: #0c4a6e; font-size: 0.9rem;">Immediate action required. System at breaking point.</p>
-                    </div>
-                    <div>
-                        <div style="font-weight: 600; color: #d97706; margin-bottom: 0.25rem;">🟠 HIGH</div>
-                        <p style="margin: 0; color: #0c4a6e; font-size: 0.9rem;">Urgent intervention needed within hours.</p>
-                    </div>
-                    <div>
-                        <div style="font-weight: 600; color: #0369a1; margin-bottom: 0.25rem;">🔵 MEDIUM</div>
-                        <p style="margin: 0; color: #0c4a6e; font-size: 0.9rem;">Monitor closely. Plan for action within 24-48 hours.</p>
-                    </div>
+            <div class="alert-item high">
+                <div class="alert-header">
+                    <span class="alert-region">New York, USA - Case Surge Detected</span>
+                    <span class="alert-badge high">HIGH</span>
+                </div>
+                <div class="alert-description">
+                    Cases increased by 85% in the past 24 hours. Trend shows accelerating growth. Peak prediction: 5,000+ cases/day within 3-5 days.
+                </div>
+                <div class="alert-meta">
+                    <span>Triggered 5 hours ago</span>
+                    <span>89,000 cumulative cases</span>
+                    <span class="alert-action">View trend analysis</span>
+                </div>
+            </div>
+
+            <div class="alert-item high">
+                <div class="alert-header">
+                    <span class="alert-region">S&atilde;o Paulo, Brazil - Resource Shortage</span>
+                    <span class="alert-badge high">HIGH</span>
+                </div>
+                <div class="alert-description">
+                    Oxygen supply expected to be depleted in 2 days at current consumption rate. Ventilator availability at 15%. Recommend immediate procurement and supply redistribution.
+                </div>
+                <div class="alert-meta">
+                    <span>Triggered 8 hours ago</span>
+                    <span>45 hospitals reporting shortage</span>
+                    <span class="alert-action">Resource allocation</span>
+                </div>
+            </div>
+
+            <div class="alert-item medium">
+                <div class="alert-header">
+                    <span class="alert-region">Los Angeles, USA - Moderate Surge</span>
+                    <span class="alert-badge medium">MEDIUM</span>
+                </div>
+                <div class="alert-description">
+                    Cases increased by 42% compared to 7-day average. Monitor situation. Current resources appear adequate for next 48-72 hours.
+                </div>
+                <div class="alert-meta">
+                    <span>Triggered 12 hours ago</span>
+                    <span>1,200 new cases today</span>
+                    <span class="alert-action">Monitor</span>
+                </div>
+            </div>
+
+            <div class="alert-item medium">
+                <div class="alert-header">
+                    <span class="alert-region">Mumbai, India - New Cluster Detected</span>
+                    <span class="alert-badge medium">MEDIUM</span>
+                </div>
+                <div class="alert-description">
+                    Unusual cluster of cases detected in specific district. 23 new cases in past 6 hours from area with previously low case count. Recommend targeted surveillance.
+                </div>
+                <div class="alert-meta">
+                    <span>Triggered 1 hour ago</span>
+                    <span>Under investigation</span>
+                    <span class="alert-action">Investigate cluster</span>
+                </div>
+            </div>
+
+            <div class="alert-item medium">
+                <div class="alert-header">
+                    <span class="alert-region">London, UK - Severity Increase</span>
+                    <span class="alert-badge medium">MEDIUM</span>
+                </div>
+                <div class="alert-description">
+                    Proportion of severe cases increased from 5% to 12% in past 5 days. May indicate new variant or demographic shift. Recommend genomic sequencing.
+                </div>
+                <div class="alert-meta">
+                    <span>Triggered 18 hours ago</span>
+                    <span>Likely new variant</span>
+                    <span class="alert-action">Variant analysis</span>
                 </div>
             </div>
         </div>
-    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Surveillance</p>
+        <div class="info-box">
+            <h3>Alert Severity Levels</h3>
+            <div class="severity-grid">
+                <div>
+                    <div class="severity-item-label" style="color: #dc2626;">CRITICAL</div>
+                    <p class="severity-item-desc">Immediate action required. System at breaking point.</p>
+                </div>
+                <div>
+                    <div class="severity-item-label" style="color: #d97706;">HIGH</div>
+                    <p class="severity-item-desc">Urgent intervention needed within hours.</p>
+                </div>
+                <div>
+                    <div class="severity-item-label" style="color: #0e4f8b;">MEDIUM</div>
+                    <p class="severity-item-desc">Monitor closely. Plan for action within 24-48 hours.</p>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <div class="alerts-footer">
+        <p>&copy; 2026 MediAlert Surveillance</p>
+    </div>
 </body>
 </html>

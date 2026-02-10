@@ -6,209 +6,206 @@
     <title>Hospital Login - MediAlert</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        .login-container {
-            max-width: 480px;
-            margin: 4rem auto;
-            background: white;
-            padding: 3rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
-            border: 3px solid #e8e4df;
-            animation: fadeInUp 0.6s ease-out;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .login-page-header {
+            background: #0e4f8b;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        .login-page-header a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .login-container {
+            max-width: 460px;
+            margin: 3rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
+
         .login-header h1 {
-            color: #d4746a;
-            margin-bottom: 0.75rem;
-            font-size: 2.25rem;
-            font-family: 'Playfair Display', serif;
+            color: #0e4f8b;
+            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
         }
+
         .login-header p {
-            color: #6b6b6b;
-            font-size: 1.05rem;
-            line-height: 1.6;
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
+
         .form-group {
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
         }
+
         label {
             display: block;
-            margin-bottom: 0.75rem;
-            color: #2d2d2d;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
+
         input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #e8e4df;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 0.875rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.95rem;
             box-sizing: border-box;
-            transition: all 0.3s;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
         }
+
         input:focus {
             outline: none;
-            border-color: #d4746a;
-            box-shadow: 0 0 0 4px rgba(212, 116, 106, 0.1);
-            transform: translateY(-2px);
+            border-color: #0e4f8b;
+            box-shadow: 0 0 0 3px rgba(14, 79, 139, 0.1);
         }
-        input:hover {
-            border-color: #d4746a;
-        }
+
         .login-btn {
             width: 100%;
-            padding: 1.125rem;
-            background: linear-gradient(135deg, #d4746a, #e19489);
+            padding: 0.875rem;
+            background: #0e4f8b;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.05rem;
+            border-radius: 6px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.3);
-            position: relative;
-            overflow: hidden;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-        .login-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        .login-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
+
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 116, 106, 0.4);
+            background: #0a3d6b;
         }
+
         .error-message {
-            background: #f8e8e7;
-            color: #c85a54;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 0.875rem;
+            border-radius: 6px;
+            margin-bottom: 1.25rem;
             display: none;
-            border: 2px solid #c85a54;
+            border: 1px solid #fecaca;
+            font-size: 0.9rem;
         }
+
         .error-message.show {
             display: block;
         }
+
         .demo-notice {
-            background: linear-gradient(135deg, #e8f4e7 0%, #d1fae5 100%);
-            border: 3px solid #7a9b76;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            box-shadow: 0 4px 12px rgba(122, 155, 118, 0.15);
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
         }
+
         .demo-notice h3 {
-            color: #6b9b68;
-            margin-bottom: 0.75rem;
-            font-size: 1.15rem;
-            font-family: 'Playfair Display', serif;
-        }
-        .demo-notice p {
-            color: #2d2d2d;
-            font-size: 0.95rem;
-            margin: 0.5rem 0;
-            line-height: 1.6;
-        }
-        .demo-notice strong {
-            color: #6b9b68;
-        }
-        .back-link {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .back-link a {
-            color: #d4746a;
-            text-decoration: none;
+            color: #0e4f8b;
+            margin-bottom: 0.5rem;
             font-size: 1rem;
             font-weight: 600;
-            transition: all 0.2s;
         }
+
+        .demo-notice p {
+            color: #1e293b;
+            font-size: 0.9rem;
+            margin: 0.4rem 0;
+            line-height: 1.5;
+        }
+
+        .demo-notice strong {
+            color: #0e4f8b;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-link a {
+            color: #0e4f8b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
         .back-link a:hover {
-            color: #b45d54;
             text-decoration: underline;
+        }
+
+        .login-footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-icon">🏥</span>
-                <span>MediAlert</span>
-            </a>
+    <div class="login-page-header">
+        <a href="/">MediAlert</a>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Hospital Portal</h1>
+            <p>Access the dashboard to upload and analyze X-rays</p>
         </div>
-    </header>
 
-    <main class="main">
-        <div class="login-container">
-            <div class="login-header">
-                <h1>Hospital Portal</h1>
-                <p>Access the dashboard to upload and analyze X-rays</p>
+        {% if error %}
+        <div class="error-message show">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="hospital_id">Hospital Name (Optional)</label>
+                <input type="text" id="hospital_id" name="hospital_id" placeholder="e.g., City General Hospital">
             </div>
 
-            {% if error %}
-            <div class="error-message show">{{ error }}</div>
-            {% endif %}
+            <button type="submit" class="login-btn">Access Dashboard</button>
+        </form>
 
-            <form method="POST">
-                <div class="form-group">
-                    <label for="hospital_id">Hospital Name (Optional)</label>
-                    <input type="text" id="hospital_id" name="hospital_id" placeholder="e.g., City General Hospital">
-                </div>
-
-                <button type="submit" class="login-btn">
-                    <span style="position: relative; z-index: 1;">Access Dashboard →</span>
-                </button>
-            </form>
-
-            <div class="demo-notice">
-                <h3>✨ Demo Mode</h3>
-                <p><strong>No authentication required!</strong> This is a demonstration system. Simply click "Access Dashboard" to enter.</p>
-                <p style="margin-top: 0.75rem;">You can optionally enter a hospital name for personalization.</p>
-            </div>
-
-            <div class="back-link">
-                <a href="/">← Back to Home</a>
-            </div>
+        <div class="demo-notice">
+            <h3>Demo Mode</h3>
+            <p><strong>No authentication required.</strong> This is a demonstration system. Simply click "Access Dashboard" to enter.</p>
+            <p style="margin-top: 0.5rem;">You can optionally enter a hospital name for personalization.</p>
         </div>
-    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Hospital Portal</p>
-            </div>
+        <div class="back-link">
+            <a href="/">Back to Home</a>
         </div>
-    </footer>
+    </div>
+
+    <div class="login-footer">
+        <p>&copy; 2026 MediAlert Hospital Portal</p>
+    </div>
 </body>
 </html>
