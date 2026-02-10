@@ -1,6 +1,9 @@
 """
 Predictive Analytics Module
 Handles time-series forecasting, resource demand prediction, and trend analysis.
+
+AI Attribution: This file was developed with assistance from Claude (Anthropic).
+https://claude.ai
 """
 
 import pandas as pd

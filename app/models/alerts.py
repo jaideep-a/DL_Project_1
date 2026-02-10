@@ -1,6 +1,9 @@
 """
 Alert Engine Module
 Generates automated alerts for rapid growth, capacity warnings, and resource depletion.
+
+AI Attribution: This file was developed with assistance from Claude (Anthropic).
+https://claude.ai
 """
 
 from datetime import datetime, timedelta
