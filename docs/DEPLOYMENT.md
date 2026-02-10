@@ -23,18 +23,26 @@ In Railway dashboard, go to your service → Variables tab and add:
 
 **Required:**
 ```
-MODEL_API_URL=https://your-model-api.railway.app/predict
+MODEL_API_URL=https://dl-project-1-kqcz.onrender.com/api/predict
+MODEL_API_HEALTH_URL=https://dl-project-1-kqcz.onrender.com/health
 SECRET_KEY=<generate-a-random-32-char-string>
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-anon-key
 ```
 
-**Optional:**
+**Optional but Recommended:**
 ```
-MODEL_API_HEALTH_URL=https://your-model-api.railway.app/health
+SESSION_LIFETIME_HOURS=24
 MODEL_API_KEY=<if-authentication-required>
-API_TIMEOUT_SECONDS=10
+API_TIMEOUT_SECONDS=30
 MAX_FILE_SIZE_MB=10
 DEBUG=False
 ```
+
+**Important Notes:**
+- `SESSION_LIFETIME_HOURS`: Controls how long users stay logged in (default: 24 hours)
+- `API_TIMEOUT_SECONDS`: Increased to 30 seconds for model inference (was 10)
+- `SUPABASE_URL` and `SUPABASE_KEY`: Required for database operations. Get these from your Supabase project dashboard.
 
 To generate a secret key:
 ```bash
@@ -130,6 +138,21 @@ If a deployment has issues:
 - Railway free tier has limits
 - Optimize image handling to reduce memory
 - Consider upgrading plan for production use
+
+### Session expired errors
+
+If users see "Session expired. Please log in again." frequently:
+
+1. **Check SESSION_LIFETIME_HOURS is set** in Railway environment variables (default: 24 hours)
+2. **Verify SECRET_KEY is set** and consistent across deployments
+3. **Check Railway doesn't restart the app** frequently (check deployment logs)
+4. **Ensure cookies are enabled** in the browser
+5. **Check if using HTTPS** - secure cookies require HTTPS in production
+
+To fix immediately:
+- Set `SESSION_LIFETIME_HOURS=24` (or higher) in Railway variables
+- Ensure `SECRET_KEY` is a long random string and doesn't change between deployments
+- Redeploy the application after setting these variables
 
 ## Environment Comparison
 

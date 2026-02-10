@@ -24,6 +24,7 @@ class Config:
     # Flask Configuration
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+    SESSION_LIFETIME_HOURS = int(os.getenv('SESSION_LIFETIME_HOURS', '24'))
 
     # Allowed file types
     ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
