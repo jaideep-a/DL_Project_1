@@ -380,6 +380,160 @@
             </div>
         </div>
 
+        <!-- Bed Availability Section -->
+        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="stat-card" style="border-left-color: #059669;">
+                <div class="stat-label">Total Beds (India)</div>
+                <div class="stat-value" style="color: #059669;">4,85,200</div>
+                <div class="stat-change">Across 1,247 hospitals</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #d97706;">
+                <div class="stat-label">Beds Occupied</div>
+                <div class="stat-value" style="color: #d97706;">3,78,456</div>
+                <div class="stat-change up">78% occupancy rate</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #059669;">
+                <div class="stat-label">Beds Available</div>
+                <div class="stat-value" style="color: #059669;">1,06,744</div>
+                <div class="stat-change">22% capacity remaining</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #dc2626;">
+                <div class="stat-label">ICU Beds Available</div>
+                <div class="stat-value" style="color: #dc2626;">4,892</div>
+                <div class="stat-change up">Only 15% ICU capacity left</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #dc2626;">
+                <div class="stat-label">Additional Beds Needed</div>
+                <div class="stat-value" style="color: #dc2626;">62,400</div>
+                <div class="stat-change up">Projected need in 14 days</div>
+            </div>
+        </div>
+
+        <!-- State-wise Bed Capacity Needs -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>State-wise Bed Availability & Capacity Needs</h2>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1.25rem;">States highlighted in red urgently need more bed capacity based on current occupancy and case growth trends.</p>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: left; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">State</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: right; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">Total Beds</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: right; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">Available</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: right; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">Occupancy</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: right; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">ICU Free</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: right; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">Extra Beds Needed</th>
+                            <th style="background: #f8fafc; padding: 0.75rem; text-align: center; color: #64748b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #fef2f2;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Maharashtra</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">68,500</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 600;">4,110</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">94%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626;">182</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">+12,400</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #dc2626; color: white;">CRITICAL</span></td>
+                        </tr>
+                        <tr style="background: #fef2f2;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Delhi</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">42,300</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 600;">2,961</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">93%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626;">96</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">+8,700</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #dc2626; color: white;">CRITICAL</span></td>
+                        </tr>
+                        <tr style="background: #fef2f2;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Karnataka</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">52,100</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 600;">4,689</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">91%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626;">214</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #dc2626; font-weight: 700;">+9,200</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #dc2626; color: white;">CRITICAL</span></td>
+                        </tr>
+                        <tr style="background: #fff7ed;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Uttar Pradesh</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">58,400</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 600;">8,760</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">85%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706;">412</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">+6,800</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #f59e0b; color: white;">HIGH</span></td>
+                        </tr>
+                        <tr style="background: #fff7ed;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Tamil Nadu</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">45,600</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 600;">7,296</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">84%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706;">356</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">+5,100</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #f59e0b; color: white;">HIGH</span></td>
+                        </tr>
+                        <tr style="background: #fff7ed;">
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Gujarat</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">38,200</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 600;">6,112</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">84%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706;">287</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706; font-weight: 700;">+4,500</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #f59e0b; color: white;">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">West Bengal</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">32,800</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">8,200</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">75%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">534</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706;">+3,200</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #0e4f8b; color: white;">MEDIUM</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Rajasthan</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">28,900</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">7,803</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">73%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">621</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #d97706;">+2,800</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #0e4f8b; color: white;">MEDIUM</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: #0e4f8b;">Kerala</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right;">34,200</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #059669;">11,970</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #059669;">65%</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #059669;">845</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: right; color: #059669;">0</td>
+                            <td style="padding: 0.75rem; border-bottom: 1px solid #f1f5f9; text-align: center;"><span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; background: #059669; color: white;">ADEQUATE</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bed Demand Prediction Chart -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h2>Predicted Bed Demand (Next 30 Days)</h2>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1rem;">Forecast based on current pneumonia case severity trends detected from X-ray analysis across hospitals.</p>
+            <canvas id="bedDemandChart" height="120"></canvas>
+            <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="background: #fef2f2; padding: 1rem; border-radius: 6px; border-left: 3px solid #dc2626;">
+                    <div style="font-weight: 700; color: #dc2626; font-size: 0.95rem;">Peak Demand: Day 21-25</div>
+                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.25rem;">Estimated 5,48,000 beds needed nationally. Current capacity falls short by ~62,800 beds.</div>
+                </div>
+                <div style="background: #fff7ed; padding: 1rem; border-radius: 6px; border-left: 3px solid #d97706;">
+                    <div style="font-weight: 700; color: #d97706; font-size: 0.95rem;">ICU Shortage Expected: Day 14</div>
+                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.25rem;">Severe pneumonia cases projected to exceed ICU capacity by 3,400 beds in 2 weeks.</div>
+                </div>
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: 6px; border-left: 3px solid #0e4f8b;">
+                    <div style="font-weight: 700; color: #0e4f8b; font-size: 0.95rem;">Severity-Driven Prediction</div>
+                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 0.25rem;">18.7% of X-rays flagged severe pneumonia this week (up from 12.3% last week), driving bed demand surge.</div>
+                </div>
+            </div>
+        </div>
+
         <div class="main-grid">
             <div class="card">
                 <h2>State-wise Case Distribution</h2>
@@ -582,6 +736,84 @@
             document.getElementById('mobileSidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
+
+        // Bed Demand Prediction Chart
+        const bedCtx = document.getElementById('bedDemandChart').getContext('2d');
+        new Chart(bedCtx, {
+            type: 'line',
+            data: {
+                labels: ['Today', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+                datasets: [
+                    {
+                        label: 'Beds Needed (Projected)',
+                        data: [378456, 412000, 448000, 498000, 536000, 548000, 521000],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.08)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#dc2626'
+                    },
+                    {
+                        label: 'Current Bed Capacity',
+                        data: [485200, 485200, 485200, 485200, 485200, 485200, 485200],
+                        borderColor: '#059669',
+                        borderDash: [8, 4],
+                        backgroundColor: 'rgba(5, 150, 105, 0.04)',
+                        tension: 0,
+                        fill: false,
+                        borderWidth: 2,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'ICU Beds Needed',
+                        data: [27800, 31200, 35800, 39400, 42100, 43600, 41200],
+                        borderColor: '#d97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.06)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#d97706'
+                    },
+                    {
+                        label: 'ICU Capacity',
+                        data: [32600, 32600, 32600, 32600, 32600, 32600, 32600],
+                        borderColor: '#0e4f8b',
+                        borderDash: [8, 4],
+                        tension: 0,
+                        fill: false,
+                        borderWidth: 2,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { font: { size: 11, weight: 'bold' }, boxWidth: 20 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: { display: true, text: 'Number of Beds' },
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
+                                return value;
+                            }
+                        }
+                    },
+                    x: { title: { display: true, text: 'Forecast Timeline' } }
+                }
+            }
+        });
 
         const ctx = document.getElementById('trendsChart').getContext('2d');
         new Chart(ctx, {

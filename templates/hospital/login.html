@@ -76,7 +76,7 @@
             font-family: 'Inter', sans-serif;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #0e4f8b;
             box-shadow: 0 0 0 3px rgba(14, 79, 139, 0.1);
@@ -186,8 +186,10 @@
 
         <form method="POST">
             <div class="form-group">
-                <label for="hospital_id">Hospital Name (Optional)</label>
-                <input type="text" id="hospital_id" name="hospital_id" placeholder="e.g., City General Hospital">
+                <label for="hospital_id">Select Hospital</label>
+                <select id="hospital_id" name="hospital_id" style="width: 100%; padding: 0.875rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s; font-family: 'Inter', sans-serif; background: white; color: #1e293b; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M7%2010L1.5%204h11z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.875rem center;">
+                    <option value="sitaram-hospital">Sitaram Hospital, Mumbai</option>
+                </select>
             </div>
 
             <button type="submit" class="login-btn">Access Dashboard</button>
@@ -195,8 +197,7 @@
 
         <div class="demo-notice">
             <h3>Demo Mode</h3>
-            <p><strong>No authentication required.</strong> This is a demonstration system. Simply click "Access Dashboard" to enter.</p>
-            <p style="margin-top: 0.5rem;">You can optionally enter a hospital name for personalization.</p>
+            <p><strong>No authentication required.</strong> This is a demonstration system. Select a hospital and click "Access Dashboard" to enter.</p>
         </div>
 
         <div class="back-link">
