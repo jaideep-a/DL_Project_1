@@ -1,3 +1,6 @@
+# AI Attribution: This file was developed with assistance from Claude (Anthropic).
+# https://claude.ai
+
 import os
 <<<<<<< HEAD
 from datetime import datetime
