@@ -7,6 +7,50 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        .top-nav {
+            background: #1e3a5f;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .top-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .nav-title {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-btn:hover {
+            background: white;
+            color: #1e3a5f;
+        }
+        .nav-btn.active {
+            background: white;
+            color: #1e3a5f;
+        }
+
         .dashboard-header {
             background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             color: white;
@@ -54,9 +98,6 @@
         .metric-change.up {
             color: #dc2626;
         }
-        .metric-change.down {
-            color: #059669;
-        }
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -90,125 +131,23 @@
             color: #0369a1;
             font-weight: 600;
         }
-        .region-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .region-item {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .region-item:hover {
-            background: #f8fafc;
-        }
-        .region-item:last-child {
-            border-bottom: none;
-        }
-        .region-name {
-            font-weight: 600;
-            color: #1e3a5f;
-        }
-        .region-cases {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-        .region-trend {
-            color: #dc2626;
-            font-weight: 600;
-        }
-        .alert-box {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        .alert-box.critical {
-            background: #fee2e2;
-            border-color: #fca5a5;
-        }
-        .alert-box.high {
-            background: #fef3c7;
-            border-color: #fcd34d;
-        }
-        .alert-box.medium {
-            background: #dbeafe;
-            border-color: #bae6fd;
-        }
-        .alert-severity {
-            font-weight: 600;
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-right: 0.5rem;
-        }
-        .alert-severity.critical {
-            background: #dc2626;
-            color: white;
-        }
-        .alert-severity.high {
-            background: #d97706;
-            color: white;
-        }
-        .alert-severity.medium {
-            background: #0369a1;
-            color: white;
-        }
-        .alert-text {
-            color: #7f1d1d;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-        .alerts-container {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .nav-tab {
-            padding: 0.75rem 1rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            color: #64748b;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-        .nav-tab.active {
-            color: #1e3a5f;
-            border-bottom-color: #1e3a5f;
-        }
         .full-width {
             grid-column: 1 / -1;
-        }
-        .container-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .container-nav a {
-            color: #4a90b8;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .container-nav a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="top-nav-content">
+            <div class="nav-title">🏥 MediAlert</div>
+            <div class="nav-buttons">
+                <a href="/hospital/login" class="nav-btn">Hospital Portal</a>
+                <a href="/surveillance" class="nav-btn active">Surveillance</a>
+            </div>
+        </div>
+    </div>
+
     <header class="header">
         <div class="container">
             <a href="/" class="logo">
@@ -229,23 +168,23 @@
             <div class="metrics-bar">
                 <div class="metric-card">
                     <div class="metric-label">Global Cases</div>
-                    <div class="metric-value">{{ (global_stats.case_count / 1000000)|round(2) }}M</div>
+                    <div class="metric-value">2.5M</div>
                     <div class="metric-change up">↑ 3.2% vs yesterday</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">New Cases (24h)</div>
-                    <div class="metric-value">{{ (global_stats.case_count * 0.08)|round(0)|int }}K</div>
+                    <div class="metric-value">45K</div>
                     <div class="metric-change up">↑ 12.5% acceleration</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Severe Cases</div>
-                    <div class="metric-value">{{ (global_stats.severe_count / 1000)|round(1) }}K</div>
-                    <div class="metric-change">{{ ((global_stats.severe_count / global_stats.case_count * 100) if global_stats.case_count > 0 else 0)|round(1) }}%</div>
+                    <div class="metric-value">312K</div>
+                    <div class="metric-change">12.3% of total</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">Deaths</div>
-                    <div class="metric-value">{{ (global_stats.deaths / 1000)|round(1) }}K</div>
-                    <div class="metric-change">CFR: {{ ((global_stats.deaths / global_stats.case_count * 100) if global_stats.case_count > 0 else 0)|round(2) }}%</div>
+                    <div class="metric-value">18.5K</div>
+                    <div class="metric-change">CFR: 0.73%</div>
                 </div>
             </div>
 
@@ -276,41 +215,26 @@
                 <!-- Top Affected Regions -->
                 <div class="card">
                     <h2>🔴 Top Affected Regions</h2>
-                    <div class="region-list">
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/US'">
-                            <div>
-                                <div class="region-name">United States</div>
-                                <div class="region-cases">450K cases • 240 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 8.5%</div>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <div style="padding: 1rem; border-bottom: 1px solid #e2e8f0; cursor: pointer;">
+                            <div style="font-weight: 600; color: #1e3a5f;">United States</div>
+                            <div style="color: #64748b; font-size: 0.9rem;">450K cases • 240 hospitals</div>
+                            <div style="color: #dc2626; font-weight: 600; float: right;">↑ 8.5%</div>
                         </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/IN'">
-                            <div>
-                                <div class="region-name">India</div>
-                                <div class="region-cases">800K cases • 450 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 15.2%</div>
+                        <div style="padding: 1rem; border-bottom: 1px solid #e2e8f0; cursor: pointer;">
+                            <div style="font-weight: 600; color: #1e3a5f;">India</div>
+                            <div style="color: #64748b; font-size: 0.9rem;">800K cases • 450 hospitals</div>
+                            <div style="color: #dc2626; font-weight: 600; float: right;">↑ 15.2%</div>
                         </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/BR'">
-                            <div>
-                                <div class="region-name">Brazil</div>
-                                <div class="region-cases">300K cases • 180 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 6.3%</div>
+                        <div style="padding: 1rem; border-bottom: 1px solid #e2e8f0; cursor: pointer;">
+                            <div style="font-weight: 600; color: #1e3a5f;">Brazil</div>
+                            <div style="color: #64748b; font-size: 0.9rem;">300K cases • 180 hospitals</div>
+                            <div style="color: #dc2626; font-weight: 600; float: right;">↑ 6.3%</div>
                         </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/GB'">
-                            <div>
-                                <div class="region-name">United Kingdom</div>
-                                <div class="region-cases">142K cases • 120 hospitals</div>
-                            </div>
-                            <div class="region-trend">↓ 2.1%</div>
-                        </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/FR'">
-                            <div>
-                                <div class="region-name">France</div>
-                                <div class="region-cases">128K cases • 95 hospitals</div>
-                            </div>
-                            <div class="region-trend">→ 0.5%</div>
+                        <div style="padding: 1rem;">
+                            <div style="font-weight: 600; color: #1e3a5f;">United Kingdom</div>
+                            <div style="color: #64748b; font-size: 0.9rem;">142K cases • 120 hospitals</div>
+                            <div style="color: #059669; font-weight: 600; float: right;">↓ 2.1%</div>
                         </div>
                     </div>
                 </div>
@@ -318,24 +242,23 @@
                 <!-- Active Alerts -->
                 <div class="card">
                     <h2>🚨 Active Alerts</h2>
-                    <div class="alerts-container">
-                        {% if alerts %}
-                            {% for alert in alerts[:5] %}
-                            <div class="alert-box {{ alert.severity }}">
-                                <span class="alert-severity {{ alert.severity }}">{{ alert.severity|upper }}</span>
-                                <strong>{{ alert.region_id }}</strong>
-                                <div class="alert-text">{{ alert.description }}</div>
-                            </div>
-                            {% endfor %}
-                        {% else %}
-                        <div style="padding: 1rem; text-align: center; color: #64748b;">
-                            ✓ No critical alerts at this time
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <div style="background: #fee2e2; border: 1px solid #fca5a5; border-radius: 6px; padding: 1rem; margin-bottom: 0.75rem;">
+                            <span style="background: #dc2626; color: white; padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: 600;">CRITICAL</span>
+                            <strong style="margin-left: 0.5rem;">Delhi, India - ICU Capacity Critical</strong>
+                            <div style="color: #7f1d1d; font-size: 0.9rem; margin-top: 0.5rem;">ICU occupancy at 98%. Immediate action required.</div>
                         </div>
-                        {% endif %}
+                        <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px; padding: 1rem; margin-bottom: 0.75rem;">
+                            <span style="background: #d97706; color: white; padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: 600;">HIGH</span>
+                            <strong style="margin-left: 0.5rem;">New York, USA - Case Surge Detected</strong>
+                            <div style="color: #92400e; font-size: 0.9rem; margin-top: 0.5rem;">Cases increased 85% in 24 hours.</div>
+                        </div>
+                        <div style="background: #dbeafe; border: 1px solid #bae6fd; border-radius: 6px; padding: 1rem;">
+                            <span style="background: #0369a1; color: white; padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: 600;">MEDIUM</span>
+                            <strong style="margin-left: 0.5rem;">Los Angeles, USA - Moderate Surge</strong>
+                            <div style="color: #0c4a6e; font-size: 0.9rem; margin-top: 0.5rem;">42% increase vs 7-day average.</div>
+                        </div>
                     </div>
-                    <p style="margin-top: 1rem;">
-                        <a href="/surveillance/alerts" style="color: #4a90b8; text-decoration: none;">View all alerts →</a>
-                    </p>
                 </div>
             </div>
 
@@ -344,7 +267,7 @@
                 <!-- Hospital Network -->
                 <div class="card">
                     <h2>🏥 Hospital Network Status</h2>
-                    <div class="metrics-bar" style="margin: 1rem 0; grid-template-columns: repeat(4, 1fr);">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
                         <div style="padding: 1rem; background: #f0f9ff; border-radius: 6px; text-align: center;">
                             <div style="color: #0369a1; font-size: 1.5rem; font-weight: 700;">4,250</div>
                             <div style="color: #0c4a6e; font-size: 0.85rem;">Hospitals Reporting</div>
@@ -362,11 +285,6 @@
                             <div style="color: #0c4a6e; font-size: 0.85rem;">Data Freshness</div>
                         </div>
                     </div>
-                    <div style="margin-top: 1rem;">
-                        <a href="/surveillance/hospitals" style="color: #4a90b8; text-decoration: none; font-weight: 500;">
-                            View detailed hospital network →
-                        </a>
-                    </div>
                 </div>
             </div>
 
@@ -374,8 +292,8 @@
             <div style="background: #f0f9ff; padding: 1.5rem; border-radius: 8px; margin-top: 2rem; border-left: 4px solid #0369a1;">
                 <h3 style="color: #0369a1; margin: 0 0 0.5rem 0;">ℹ️ About Real-Time Surveillance</h3>
                 <p style="color: #0c4a6e; margin: 0; font-size: 0.9rem;">
-                    Data is aggregated from {{ (regional_data|length if regional_data else 0) }} reporting regions and updated in real-time as hospitals upload and analyze X-ray images.
-                    All data is anonymized and HIPAA/GDPR compliant. Predictions are for surveillance purposes and should not be used for clinical decisions.
+                    Real-time pandemic tracking with AI-powered analysis. All data is anonymized and HIPAA/GDPR compliant.
+                    Pre-populated with 30 days of sample outbreak data for demonstration purposes.
                 </p>
             </div>
         </div>
@@ -414,11 +332,7 @@
                 scales: {
                     y: {
                         type: 'logarithmic',
-                        beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: 'Cases (Log Scale)'
-                        }
+                        title: { display: true, text: 'Cases (Log Scale)' }
                     }
                 }
             }

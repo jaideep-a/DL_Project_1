@@ -128,22 +128,25 @@
 
             <form method="POST">
                 <div class="form-group">
-                    <label for="hospital_id">Hospital ID (UUID)</label>
-                    <input type="text" id="hospital_id" name="hospital_id" required placeholder="Enter your hospital ID">
+                    <label for="hospital_id">Username (Hospital ID)</label>
+                    <input type="text" id="hospital_id" name="hospital_id" required placeholder="Paste hospital ID from Supabase">
                 </div>
 
                 <div class="form-group">
-                    <label for="api_key">API Key</label>
-                    <input type="password" id="api_key" name="api_key" required placeholder="Enter your API key">
+                    <label for="api_key">Password (API Key)</label>
+                    <input type="text" id="api_key" name="api_key" required placeholder="Paste API key from Supabase">
                 </div>
 
                 <button type="submit" class="login-btn">Sign In</button>
             </form>
 
             <div class="test-credentials">
-                <h3>🧪 Test Credentials</h3>
-                <p><strong>For testing:</strong> Check your Supabase database table "hospitals" for valid Hospital ID and API Key combinations.</p>
-                <p style="margin-top: 0.5rem;">Default hospitals have been pre-populated in the database.</p>
+                <h3>💡 Quick Test Guide</h3>
+                <p><strong>Step 1:</strong> Open your Supabase project</p>
+                <p><strong>Step 2:</strong> Go to Table Editor → hospitals</p>
+                <p><strong>Step 3:</strong> Copy any hospital's <code style="background: #e0e7ff; padding: 2px 6px; border-radius: 3px;">id</code> value → Paste above</p>
+                <p><strong>Step 4:</strong> Copy same hospital's <code style="background: #e0e7ff; padding: 2px 6px; border-radius: 3px;">api_key</code> value → Paste above</p>
+                <p style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #bae6fd;"><strong>5 test hospitals pre-loaded!</strong></p>
             </div>
 
             <div class="back-link">
