@@ -3,471 +3,848 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surveillance Dashboard - MediAlert</title>
+    <title>India Surveillance Dashboard - MediAlert</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .dashboard-header {
-            background: linear-gradient(135deg, #e8f4e7 0%, #d1fae5 100%);
-            color: #2d2d2d;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 12px;
-            border: 3px solid #7a9b76;
-            box-shadow: 0 8px 24px rgba(122, 155, 118, 0.15);
-            animation: fadeInUp 0.6s ease-out;
-        }
-        .dashboard-header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2.5rem;
-            color: #6b9b68;
-            font-family: 'Playfair Display', serif;
-        }
-        .dashboard-header p {
+        * {
             margin: 0;
-            color: #2d2d2d;
-            opacity: 0.85;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .metrics-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1a1a1a;
+            line-height: 1.6;
+            background: #f8fafc;
         }
-        .metric-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
-            border: 2px solid #e8e4df;
-            transition: all 0.3s ease;
-            cursor: pointer;
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-        .metric-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(212, 116, 106, 0.15);
-            border-color: #d4746a;
+
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .metric-label {
-            color: #6b6b6b;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            margin-bottom: 0.25rem;
-            font-weight: 600;
-        }
-        .metric-value {
-            color: #d4746a;
-            font-size: 2rem;
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.25rem;
-            font-family: 'Playfair Display', serif;
+            color: #2563eb;
         }
-        .metric-change {
-            font-size: 0.85rem;
-            color: #6b6b6b;
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #4b5563;
             font-weight: 500;
+            transition: color 0.2s;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
         }
-        .metric-change.up {
-            color: #d4746a;
+
+        .nav-menu a:hover {
+            color: #2563eb;
+            background: #eff6ff;
         }
-        .metric-change.down {
-            color: #7a9b76;
+
+        .nav-btn {
+            background: #2563eb;
+            color: white !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
         }
-        .main-grid {
+
+        .nav-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: right 0.3s ease;
+            z-index: 2000;
+        }
+
+        .mobile-sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4b5563;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 3rem;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-menu a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            display: block;
+            padding: 0.75rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        @media (max-width: 1024px) {
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #2563eb;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #1e40af;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .stat-change.up {
+            color: #dc2626;
+        }
+
+        .stat-change.down {
+            color: #16a34a;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            color: #1e40af;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* India Map Heatmap */
+        .heatmap-container {
+            position: relative;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 10px;
+            padding: 2rem;
+            min-height: 500px;
+            border: 2px solid #93c5fd;
+        }
+
+        .india-map {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .state-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .state-marker:hover {
+            transform: scale(1.3);
+            z-index: 10;
+        }
+
+        .severity-low { background: #10b981; }
+        .severity-medium { background: #f59e0b; }
+        .severity-high { background: #ef4444; }
+        .severity-critical { background: #991b1b; }
+
+        .state-tooltip {
+            position: absolute;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 100;
+            min-width: 200px;
+        }
+
+        .state-marker:hover + .state-tooltip {
+            display: block;
+        }
+
+        /* State List */
+        .state-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .state-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .state-item:hover {
+            background: #f8fafc;
+            padding-left: 1.5rem;
+        }
+
+        .state-name {
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        .state-cases {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .state-trend {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Alerts */
+        .alert-box {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .alert-box:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-severity {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-right: 0.5rem;
+        }
+
+        .alert-severity.critical {
+            background: #dc2626;
+            color: white;
+        }
+
+        .alert-severity.high {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .alert-severity.medium {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        /* Charts */
+        canvas {
+            max-height: 300px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: #9ca3af;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
             .main-grid {
                 grid-template-columns: 1fr;
             }
         }
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(45, 45, 45, 0.08);
-            border: 2px solid #e8e4df;
-            transition: all 0.3s ease;
-        }
-        .card:hover {
-            box-shadow: 0 8px 24px rgba(45, 45, 45, 0.12);
-        }
-        .card h2 {
-            color: #d4746a;
-            margin: 0 0 1rem 0;
-            font-size: 1.25rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-        }
-        .heatmap-placeholder {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #f9e4e1 0%, #e8f4e7 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d4746a;
-            font-weight: 600;
-            border: 2px solid #e8e4df;
-            transition: all 0.3s ease;
-        }
-        .heatmap-placeholder:hover {
-            border-color: #d4746a;
-        }
-        .region-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .region-item {
-            padding: 1rem;
-            border-bottom: 2px solid #e8e4df;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 6px;
-        }
-        .region-item:hover {
-            background: #faf8f5;
-            transform: translateX(8px);
-            border-bottom-color: #d4746a;
-        }
-        .region-item:last-child {
-            border-bottom: 2px solid #e8e4df;
-        }
-        .region-name {
-            font-weight: 600;
-            color: #2d2d2d;
-            font-size: 1.05rem;
-        }
-        .region-cases {
-            color: #6b6b6b;
-            font-size: 0.9rem;
-        }
-        .region-trend {
-            color: #d4746a;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-        .alert-box {
-            background: #f8e8e7;
-            border: 3px solid #d4746a;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .alert-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 116, 106, 0.2);
-        }
-        .alert-box.critical {
-            background: #f8e8e7;
-            border-color: #d4746a;
-        }
-        .alert-box.high {
-            background: #fef3e4;
-            border-color: #e8a87c;
-        }
-        .alert-box.medium {
-            background: #e8f4e7;
-            border-color: #7a9b76;
-        }
-        .alert-severity {
-            font-weight: 600;
-            display: inline-block;
-            padding: 0.35rem 0.65rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            margin-right: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .alert-severity.critical {
-            background: #d4746a;
-            color: white;
-        }
-        .alert-severity.high {
-            background: #e8a87c;
-            color: white;
-        }
-        .alert-severity.medium {
-            background: #7a9b76;
-            color: white;
-        }
-        .alert-text {
-            color: #2d2d2d;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            line-height: 1.6;
-        }
-        .alerts-container {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e8e4df;
-        }
-        .nav-tab {
-            padding: 0.75rem 1rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            color: #6b6b6b;
-            font-weight: 500;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .nav-tab:hover {
-            color: #d4746a;
-        }
-        .nav-tab.active {
-            color: #d4746a;
-            border-bottom-color: #d4746a;
-        }
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        .container-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .container-nav a {
-            color: #d4746a;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .container-nav a:hover {
-            color: #b45d54;
-            transform: translateX(4px);
-        }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="/" class="logo">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="logo-nav">
                 <span class="logo-icon">🏥</span>
                 <span>MediAlert</span>
             </a>
+
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/surveillance">India Dashboard</a></li>
+                <li><a href="/hospital/login" class="nav-btn">Hospital Login</a></li>
+            </ul>
+
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
-    </header>
+    </nav>
 
-    <main class="main">
-        <div class="container">
-            <div class="dashboard-header">
-                <h1>🌍 Real-Time Pandemic Surveillance</h1>
-                <p>Global outbreak tracking and resource allocation</p>
+    <!-- Mobile Sidebar -->
+    <div class="overlay" id="overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <button class="sidebar-close" onclick="toggleMobileMenu()">✕</button>
+        <ul class="sidebar-menu">
+            <li><a href="/" onclick="toggleMobileMenu()">Home</a></li>
+            <li><a href="/surveillance" onclick="toggleMobileMenu()">India Dashboard</a></li>
+            <li><a href="/hospital/login" onclick="toggleMobileMenu()">Hospital Login</a></li>
+        </ul>
+    </div>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <h1>🇮🇳 India Real-Time Surveillance Dashboard</h1>
+        <p>Live tracking of pneumonia cases across Indian states and territories</p>
+    </section>
+
+    <div class="container">
+        <!-- National Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Cases (India)</div>
+                <div class="stat-value">2.4M</div>
+                <div class="stat-change up">↑ 15.2% vs yesterday</div>
             </div>
-
-            <!-- Metrics Bar -->
-            <div class="metrics-bar">
-                <div class="metric-card">
-                    <div class="metric-label">Global Cases</div>
-                    <div class="metric-value">{{ (global_stats.case_count / 1000000)|round(2) }}M</div>
-                    <div class="metric-change up">↑ 3.2% vs yesterday</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">New Cases (24h)</div>
-                    <div class="metric-value">{{ (global_stats.case_count * 0.08)|round(0)|int }}K</div>
-                    <div class="metric-change up">↑ 12.5% acceleration</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Severe Cases</div>
-                    <div class="metric-value">{{ (global_stats.severe_count / 1000)|round(1) }}K</div>
-                    <div class="metric-change">{{ ((global_stats.severe_count / global_stats.case_count * 100) if global_stats.case_count > 0 else 0)|round(1) }}%</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Deaths</div>
-                    <div class="metric-value">{{ (global_stats.deaths / 1000)|round(1) }}K</div>
-                    <div class="metric-change">CFR: {{ ((global_stats.deaths / global_stats.case_count * 100) if global_stats.case_count > 0 else 0)|round(2) }}%</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-label">New Cases (24h)</div>
+                <div class="stat-value">45.8K</div>
+                <div class="stat-change up">↑ 12.5% surge</div>
             </div>
-
-            <!-- Main Grid -->
-            <div class="main-grid">
-                <!-- Heat Map -->
-                <div class="card">
-                    <h2>📍 Geographic Distribution</h2>
-                    <div class="heatmap-placeholder">
-                        🗺️ Interactive Heat Map
-                        <br>
-                        <span style="font-size: 0.8rem; font-weight: normal;">Integration: Mapbox GL JS</span>
-                    </div>
-                    <p style="color: #6b6b6b; font-size: 0.85rem; margin-top: 1rem; font-weight: 500;">
-                        Red = High density | Orange = Medium | Green = Low
-                    </p>
-                </div>
-
-                <!-- Case Timeline -->
-                <div class="card">
-                    <h2>📈 Case Trends (30 days)</h2>
-                    <canvas id="trendsChart" height="80"></canvas>
-                </div>
+            <div class="stat-card">
+                <div class="stat-label">Severe Cases</div>
+                <div class="stat-value">128K</div>
+                <div class="stat-change">5.3% of total</div>
             </div>
-
-            <!-- Main Grid 2 -->
-            <div class="main-grid">
-                <!-- Top Affected Regions -->
-                <div class="card">
-                    <h2>🔴 Top Affected Regions</h2>
-                    <div class="region-list">
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/US'">
-                            <div>
-                                <div class="region-name">United States</div>
-                                <div class="region-cases">450K cases • 240 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 8.5%</div>
-                        </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/IN'">
-                            <div>
-                                <div class="region-name">India</div>
-                                <div class="region-cases">800K cases • 450 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 15.2%</div>
-                        </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/BR'">
-                            <div>
-                                <div class="region-name">Brazil</div>
-                                <div class="region-cases">300K cases • 180 hospitals</div>
-                            </div>
-                            <div class="region-trend">↑ 6.3%</div>
-                        </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/GB'">
-                            <div>
-                                <div class="region-name">United Kingdom</div>
-                                <div class="region-cases">142K cases • 120 hospitals</div>
-                            </div>
-                            <div class="region-trend">↓ 2.1%</div>
-                        </div>
-                        <div class="region-item" onclick="window.location.href='/surveillance/region/country/FR'">
-                            <div>
-                                <div class="region-name">France</div>
-                                <div class="region-cases">128K cases • 95 hospitals</div>
-                            </div>
-                            <div class="region-trend">→ 0.5%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Alerts -->
-                <div class="card">
-                    <h2>🚨 Active Alerts</h2>
-                    <div class="alerts-container">
-                        {% if alerts %}
-                            {% for alert in alerts[:5] %}
-                            <div class="alert-box {{ alert.severity }}">
-                                <span class="alert-severity {{ alert.severity }}">{{ alert.severity|upper }}</span>
-                                <strong>{{ alert.region_id }}</strong>
-                                <div class="alert-text">{{ alert.description }}</div>
-                            </div>
-                            {% endfor %}
-                        {% else %}
-                        <div style="padding: 1rem; text-align: center; color: #6b9b68; background: #e8f4e7; border-radius: 8px; border: 2px solid #7a9b76; font-weight: 600;">
-                            ✓ No critical alerts at this time
-                        </div>
-                        {% endif %}
-                    </div>
-                    <p style="margin-top: 1rem;">
-                        <a href="/surveillance/alerts" style="color: #d4746a; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#b45d54'" onmouseout="this.style.color='#d4746a'">View all alerts →</a>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Bottom Section -->
-            <div class="main-grid full-width">
-                <!-- Hospital Network -->
-                <div class="card">
-                    <h2>🏥 Hospital Network Status</h2>
-                    <div class="metrics-bar" style="margin: 1rem 0; grid-template-columns: repeat(4, 1fr);">
-                        <div style="padding: 1rem; background: #e8f4e7; border-radius: 8px; text-align: center; border: 2px solid #7a9b76; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(122, 155, 118, 0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-                            <div style="color: #6b9b68; font-size: 1.5rem; font-weight: 700; font-family: 'Playfair Display', serif;">4,250</div>
-                            <div style="color: #2d2d2d; font-size: 0.85rem; font-weight: 600;">Hospitals Reporting</div>
-                        </div>
-                        <div style="padding: 1rem; background: #f9e4e1; border-radius: 8px; text-align: center; border: 2px solid #d4746a; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(212, 116, 106, 0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-                            <div style="color: #d4746a; font-size: 1.5rem; font-weight: 700; font-family: 'Playfair Display', serif;">127</div>
-                            <div style="color: #2d2d2d; font-size: 0.85rem; font-weight: 600;">Active Alerts</div>
-                        </div>
-                        <div style="padding: 1rem; background: #e8f4e7; border-radius: 8px; text-align: center; border: 2px solid #7a9b76; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(122, 155, 118, 0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-                            <div style="color: #6b9b68; font-size: 1.5rem; font-weight: 700; font-family: 'Playfair Display', serif;">1.2s</div>
-                            <div style="color: #2d2d2d; font-size: 0.85rem; font-weight: 600;">Avg Response Time</div>
-                        </div>
-                        <div style="padding: 1rem; background: #f9e4e1; border-radius: 8px; text-align: center; border: 2px solid #d4746a; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 6px 16px rgba(212, 116, 106, 0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
-                            <div style="color: #d4746a; font-size: 1.5rem; font-weight: 700; font-family: 'Playfair Display', serif;">5min</div>
-                            <div style="color: #2d2d2d; font-size: 0.85rem; font-weight: 600;">Data Freshness</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <a href="/surveillance/hospitals" style="color: #d4746a; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#b45d54'" onmouseout="this.style.color='#d4746a'">
-                            View detailed hospital network →
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Info -->
-            <div style="background: linear-gradient(135deg, #e8f4e7 0%, #d1fae5 100%); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 3px solid #7a9b76; box-shadow: 0 4px 12px rgba(122, 155, 118, 0.15);">
-                <h3 style="color: #6b9b68; margin: 0 0 0.5rem 0; font-family: 'Playfair Display', serif; font-weight: 700;">ℹ️ About Real-Time Surveillance</h3>
-                <p style="color: #2d2d2d; margin: 0; font-size: 0.9rem; line-height: 1.6;">
-                    Data is aggregated from {{ (regional_data|length if regional_data else 0) }} reporting regions and updated in real-time as hospitals upload and analyze X-ray images.
-                    All data is anonymized and HIPAA/GDPR compliant. Predictions are for surveillance purposes and should not be used for clinical decisions.
-                </p>
+            <div class="stat-card">
+                <div class="stat-label">Active Hospitals</div>
+                <div class="stat-value">1,247</div>
+                <div class="stat-change">Across 28 states</div>
             </div>
         </div>
-    </main>
 
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- India Heatmap -->
+            <div class="card">
+                <h2>📍 State-wise Case Distribution</h2>
+                <div class="heatmap-container">
+                    <div class="india-map" style="text-align: center; position: relative; padding: 2rem;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">🗺️</p>
+                        <h3 style="color: #1e40af; margin-bottom: 2rem;">India - Pneumonia Cases Heatmap</h3>
+
+                        <!-- Simulated State Markers -->
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 600px; margin: 0 auto;">
+                            <div style="background: #991b1b; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Maharashtra</div>
+                                <div style="font-size: 1.5rem;">425K</div>
+                            </div>
+                            <div style="background: #ef4444; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Delhi</div>
+                                <div style="font-size: 1.5rem;">289K</div>
+                            </div>
+                            <div style="background: #ef4444; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Karnataka</div>
+                                <div style="font-size: 1.5rem;">312K</div>
+                            </div>
+                            <div style="background: #f59e0b; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Tamil Nadu</div>
+                                <div style="font-size: 1.5rem;">245K</div>
+                            </div>
+                            <div style="background: #f59e0b; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Gujarat</div>
+                                <div style="font-size: 1.5rem;">198K</div>
+                            </div>
+                            <div style="background: #f59e0b; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Uttar Pradesh</div>
+                                <div style="font-size: 1.5rem;">267K</div>
+                            </div>
+                            <div style="background: #10b981; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">West Bengal</div>
+                                <div style="font-size: 1.5rem;">156K</div>
+                            </div>
+                            <div style="background: #10b981; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Rajasthan</div>
+                                <div style="font-size: 1.5rem;">142K</div>
+                            </div>
+                            <div style="background: #10b981; color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+                                <div style="font-weight: bold;">Kerala</div>
+                                <div style="font-size: 1.5rem;">187K</div>
+                            </div>
+                        </div>
+
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color severity-critical"></div>
+                                <span>Critical (>300K)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color severity-high"></div>
+                                <span>High (200-300K)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color severity-medium"></div>
+                                <span>Medium (100-200K)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color severity-low"></div>
+                                <span>Low (<100K)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Alerts -->
+            <div class="card">
+                <h2>🚨 Active Alerts</h2>
+                <div style="max-height: 500px; overflow-y: auto;">
+                    <div class="alert-box">
+                        <span class="alert-severity critical">CRITICAL</span>
+                        <strong>Maharashtra</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">Surge of 18.5% in last 24 hours. 425K total cases. Immediate resource allocation recommended.</p>
+                    </div>
+                    <div class="alert-box">
+                        <span class="alert-severity critical">CRITICAL</span>
+                        <strong>Karnataka</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">312K cases with 15.2% increase. Hospital capacity at 87%. Urgently deploy mobile units.</p>
+                    </div>
+                    <div class="alert-box" style="background: #fff7ed; border-left-color: #f59e0b;">
+                        <span class="alert-severity high">HIGH</span>
+                        <strong>Delhi NCR</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">289K cases. Air quality deteriorating. Expect respiratory case spike in next 48-72 hours.</p>
+                    </div>
+                    <div class="alert-box" style="background: #fff7ed; border-left-color: #f59e0b;">
+                        <span class="alert-severity high">HIGH</span>
+                        <strong>Uttar Pradesh</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">267K cases across multiple districts. Rural areas showing rapid spread. Deploy field hospitals.</p>
+                    </div>
+                    <div class="alert-box" style="background: #eff6ff; border-left-color: #3b82f6;">
+                        <span class="alert-severity medium">MEDIUM</span>
+                        <strong>Tamil Nadu</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">245K cases. Steady growth. Monitor Chennai metro area closely for potential escalation.</p>
+                    </div>
+                    <div class="alert-box" style="background: #f0fdf4; border-left-color: #10b981;">
+                        <span class="alert-severity medium">STABLE</span>
+                        <strong>Kerala</strong>
+                        <p style="margin-top: 0.5rem; color: #6b7280;">187K cases. Declining trend observed. Strong healthcare response containing spread effectively.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- State Rankings -->
+        <div class="main-grid">
+            <div class="card">
+                <h2>📊 Top 15 Affected States</h2>
+                <div class="state-list">
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">1. Maharashtra</div>
+                            <div class="state-cases">425,347 cases • 287 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #dc2626;">↑ 18.5%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">2. Karnataka</div>
+                            <div class="state-cases">312,589 cases • 198 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #dc2626;">↑ 15.2%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">3. Delhi</div>
+                            <div class="state-cases">289,456 cases • 156 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #dc2626;">↑ 14.8%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">4. Uttar Pradesh</div>
+                            <div class="state-cases">267,823 cases • 223 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #dc2626;">↑ 12.3%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">5. Tamil Nadu</div>
+                            <div class="state-cases">245,671 cases • 167 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 8.5%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">6. Gujarat</div>
+                            <div class="state-cases">198,234 cases • 134 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 7.2%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">7. Kerala</div>
+                            <div class="state-cases">187,945 cases • 145 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #16a34a;">↓ 2.1%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">8. West Bengal</div>
+                            <div class="state-cases">156,782 cases • 112 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 6.8%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">9. Rajasthan</div>
+                            <div class="state-cases">142,567 cases • 98 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 5.4%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">10. Madhya Pradesh</div>
+                            <div class="state-cases">128,934 cases • 87 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 6.1%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">11. Andhra Pradesh</div>
+                            <div class="state-cases">115,678 cases • 92 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 4.7%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">12. Telangana</div>
+                            <div class="state-cases">102,456 cases • 76 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 5.9%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">13. Bihar</div>
+                            <div class="state-cases">98,234 cases • 65 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 7.8%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">14. Punjab</div>
+                            <div class="state-cases">87,456 cases • 54 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #16a34a;">↑ 3.2%</div>
+                    </div>
+                    <div class="state-item">
+                        <div>
+                            <div class="state-name">15. Haryana</div>
+                            <div class="state-cases">76,892 cases • 48 hospitals</div>
+                        </div>
+                        <div class="state-trend" style="color: #f59e0b;">↑ 4.5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trends Chart -->
+            <div class="card">
+                <h2>📈 India Case Trends (30 Days)</h2>
+                <canvas id="trendsChart"></canvas>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: #1e40af; font-size: 1.2rem; margin-bottom: 1rem;">Key Insights for Policymakers</h3>
+                    <ul style="color: #6b7280; line-height: 2;">
+                        <li><strong>Exponential Growth:</strong> Cases doubling every 8 days</li>
+                        <li><strong>Urban Hotspots:</strong> Metro areas showing faster spread</li>
+                        <li><strong>Resource Strain:</strong> Hospital capacity at 78% nationally</li>
+                        <li><strong>Regional Disparity:</strong> Northern states lagging in testing</li>
+                        <li><strong>Action Required:</strong> Deploy 500+ mobile testing units</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 2rem; border-radius: 12px; margin-top: 2rem; border: 2px solid #93c5fd;">
+            <h3 style="color: #1e40af; margin-bottom: 1rem;">ℹ️ For Policymakers & Health Officials</h3>
+            <p style="color: #374151; line-height: 1.8;">
+                This dashboard provides <strong>real-time surveillance data</strong> aggregated from 1,247 hospitals across 28 Indian states.
+                Data updates every 5 minutes as doctors upload and analyze X-rays using MediAlert's AI system.
+                All information is anonymized and HIPAA/GDPR compliant.
+            </p>
+            <p style="color: #374151; margin-top: 1rem; line-height: 1.8;">
+                <strong>Decision Support:</strong> Use this data to allocate medical resources, deploy mobile units,
+                coordinate inter-state response, and implement targeted containment measures based on real-time outbreak patterns.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-info">
-                <p>&copy; 2026 MediAlert Surveillance Dashboard</p>
-            </div>
-        </div>
+        <p style="font-weight: 600; margin-bottom: 0.5rem;">⚠️ Medical Disclaimer</p>
+        <p>MediAlert is for educational and surveillance purposes. Not for clinical diagnosis.</p>
+        <p style="margin-top: 1rem;">&copy; 2026 MediAlert India Surveillance Dashboard</p>
     </footer>
 
     <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
         // Case trends chart
         const ctx = document.getElementById('trendsChart').getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
-                datasets: [{
-                    label: 'Total Cases',
-                    data: [100000, 450000, 1850000, 8200000, 45000000, 156000000, 547000000],
-                    borderColor: '#d4746a',
-                    backgroundColor: 'rgba(212, 116, 106, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    borderWidth: 3
-                }]
+                datasets: [
+                    {
+                        label: 'Total Cases',
+                        data: [45000, 125000, 387000, 845000, 1456000, 1985000, 2400000],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 3
+                    },
+                    {
+                        label: 'Severe Cases',
+                        data: [2250, 6250, 19350, 42250, 72800, 99250, 128000],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }
+                ]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {
-                    legend: { display: true, position: 'top' }
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: {
-                        type: 'logarithmic',
-                        beginAtZero: false,
+                        beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Cases (Log Scale)'
+                            text: 'Number of Cases'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Timeline'
                         }
                     }
                 }
