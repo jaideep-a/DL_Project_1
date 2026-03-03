@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,12 +130,31 @@
             background: #e0f2fe;
         }
 
-        .dropzone-icon { font-size: 3rem; margin-bottom: 1rem; }
-        .dropzone-text { color: #0e4f8b; font-weight: 600; margin-bottom: 0.25rem; }
-        .dropzone-subtext { color: #64748b; font-size: 0.9rem; margin-bottom: 1rem; }
-        .dropzone-formats { color: #94a3b8; font-size: 0.85rem; }
+        .dropzone-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
 
-        #fileInput { display: none; }
+        .dropzone-text {
+            color: #0e4f8b;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .dropzone-subtext {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .dropzone-formats {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
 
         .preview-container {
             display: grid;
@@ -151,7 +171,11 @@
             aspect-ratio: 1;
         }
 
-        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .preview-remove {
             position: absolute;
@@ -170,9 +194,13 @@
             justify-content: center;
         }
 
-        .preview-remove:hover { background: #dc2626; }
+        .preview-remove:hover {
+            background: #dc2626;
+        }
 
-        .form-group { margin-bottom: 1.5rem; }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
         label {
             display: block;
@@ -182,7 +210,8 @@
             font-size: 0.9rem;
         }
 
-        select, input[type="text"] {
+        select,
+        input[type="text"] {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #e2e8f0;
@@ -192,17 +221,33 @@
             font-family: 'Inter', sans-serif;
         }
 
-        select:focus, input[type="text"]:focus {
+        select:focus,
+        input[type="text"]:focus {
             outline: none;
             border-color: #0e4f8b;
             box-shadow: 0 0 0 3px rgba(14, 79, 139, 0.1);
         }
 
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-        .checkbox-item { display: flex; align-items: center; }
-        .checkbox-item input { width: auto; margin-right: 0.5rem; }
-        .checkbox-item label { margin: 0; font-weight: normal; }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+        }
 
         .button-group {
             display: grid;
@@ -222,11 +267,28 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .btn-primary { background: #0e4f8b; color: white; }
-        .btn-primary:hover { background: #0a3d6b; }
-        .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
-        .btn-secondary { background: #e2e8f0; color: #1e293b; }
-        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-primary {
+            background: #0e4f8b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0a3d6b;
+        }
+
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
 
         .disclaimer-box {
             background: #fef3c7;
@@ -245,8 +307,17 @@
             display: none;
         }
 
-        .status-message.success { background: #ecfdf5; color: #065f46; display: block; }
-        .status-message.error { background: #fef2f2; color: #7f1d1d; display: block; }
+        .status-message.success {
+            background: #ecfdf5;
+            color: #065f46;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #fef2f2;
+            color: #7f1d1d;
+            display: block;
+        }
 
         .loading {
             display: none;
@@ -267,14 +338,20 @@
             vertical-align: middle;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .results-inline {
             margin-top: 1.5rem;
             display: none;
         }
 
-        .results-inline.show { display: block; }
+        .results-inline.show {
+            display: block;
+        }
 
         .result-inline-card {
             background: white;
@@ -299,8 +376,15 @@
             margin-right: 0.5rem;
         }
 
-        .result-prediction-tag.normal { background: #ecfdf5; color: #065f46; }
-        .result-prediction-tag.pneumonia { background: #fef3c7; color: #92400e; }
+        .result-prediction-tag.normal {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .result-prediction-tag.pneumonia {
+            background: #fef3c7;
+            color: #92400e;
+        }
 
         .severity-tag {
             display: inline-block;
@@ -310,9 +394,20 @@
             font-weight: 600;
         }
 
-        .severity-tag.mild { background: #ecfdf5; color: #065f46; }
-        .severity-tag.moderate { background: #fef3c7; color: #92400e; }
-        .severity-tag.severe { background: #fef2f2; color: #7f1d1d; }
+        .severity-tag.mild {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .severity-tag.moderate {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .severity-tag.severe {
+            background: #fef2f2;
+            color: #7f1d1d;
+        }
 
         .confidence-bar-inline {
             margin-top: 0.75rem;
@@ -354,8 +449,125 @@
             font-size: 0.85rem;
             margin-top: 2rem;
         }
+
+        /* ===== API Status Banner ===== */
+        .api-status-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.3s, border-color 0.3s;
+            border: 1px solid;
+        }
+
+        .api-status-banner .status-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .api-status-banner .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .api-status-banner.online {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+            color: #065f46;
+        }
+
+        .api-status-banner.online .status-dot {
+            background: #10b981;
+        }
+
+        .api-status-banner.waking {
+            background: #fffbeb;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .api-status-banner.waking .status-dot {
+            background: #f59e0b;
+            animation: pulse-dot 1.2s ease-in-out infinite;
+        }
+
+        .api-status-banner.offline {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #7f1d1d;
+        }
+
+        .api-status-banner.offline .status-dot {
+            background: #ef4444;
+        }
+
+        .api-status-banner.checking {
+            background: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0c4a6e;
+        }
+
+        .api-status-banner.checking .status-dot {
+            background: #0ea5e9;
+            animation: pulse-dot 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
+        }
+
+        .btn-wakeup {
+            padding: 0.4rem 0.85rem;
+            background: #f59e0b;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .btn-wakeup:hover {
+            background: #d97706;
+        }
+
+        .btn-wakeup:disabled {
+            background: #fcd34d;
+            cursor: not-allowed;
+        }
+
+        .fallback-warning {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            color: #92400e;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
+
 <body>
     <nav class="upload-navbar">
         <div class="upload-navbar-inner">
@@ -373,6 +585,16 @@
             <div class="upload-header">
                 <h1>Upload X-Ray Images</h1>
                 <p>Drag and drop chest X-ray images for AI analysis</p>
+            </div>
+
+            <!-- API Status Banner -->
+            <div class="api-status-banner checking" id="apiStatusBanner">
+                <div class="status-left">
+                    <span class="status-dot"></span>
+                    <span id="apiStatusText">Checking AI model status...</span>
+                </div>
+                <button class="btn-wakeup" id="wakeUpBtn" style="display: none;" onclick="wakeUpModel()">Wake Up
+                    AI</button>
             </div>
 
             <div class="disclaimer-box">
@@ -413,8 +635,12 @@
                     <h2>Analysis Results</h2>
                     <div id="resultsContainer"></div>
                     <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                        <a href="/hospital/upload" class="btn btn-primary" style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Analyze More Images</a>
-                        <a href="/hospital/dashboard" class="btn btn-secondary" style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Back to Dashboard</a>
+                        <a href="/hospital/upload" class="btn btn-primary"
+                            style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Analyze
+                            More Images</a>
+                        <a href="/hospital/dashboard" class="btn btn-secondary"
+                            style="text-decoration: none; text-align: center; flex: 1; display: inline-block;">Back to
+                            Dashboard</a>
                     </div>
                 </div>
             </div>
@@ -534,8 +760,6 @@
                 const predClass = result.prediction === 'PNEUMONIA' ? 'pneumonia' : 'normal';
                 const severityClass = result.severity || 'mild';
                 const confidence = (result.confidence * 100).toFixed(1);
-                const isFallback = result.source === 'fallback';
-
                 let html = `
                     <h4>Image #${index + 1} — ${result.filename || 'Chest X-Ray'}</h4>
                     
@@ -620,11 +844,9 @@
                 if (response.ok) {
                     const succeeded = (data.results || []).filter(r => r.status === 'success').length;
                     const skipped = (data.results || []).filter(r => r.status === 'skipped').length;
-                    const fallbackCount = (data.results || []).filter(r => r.source === 'fallback').length;
-
                     let msg = `Successfully analyzed ${succeeded} image(s).`;
                     if (skipped) msg += ` ${skipped} skipped.`;
-                    
+
                     statusMessage.textContent = msg;
                     statusMessage.className = 'status-message success';
 
@@ -648,6 +870,79 @@
                 submitBtn.disabled = false;
             }
         });
+
+        // ===== API Status & Wake-Up Logic =====
+        const apiStatusBanner = document.getElementById('apiStatusBanner');
+        const apiStatusText = document.getElementById('apiStatusText');
+        const wakeUpBtn = document.getElementById('wakeUpBtn');
+        let wakingInterval = null;
+
+        function setStatus(state, message) {
+            apiStatusBanner.className = 'api-status-banner ' + state;
+            apiStatusText.textContent = message;
+            wakeUpBtn.style.display = (state === 'offline') ? 'inline-block' : 'none';
+        }
+
+        async function checkModelStatus() {
+            try {
+                const resp = await fetch('/api/v1/model-status');
+                const data = await resp.json();
+                if (data.status === 'online') {
+                    setStatus('online', 'AI Model Ready');
+                    return true;
+                } else {
+                    setStatus('offline', 'AI Model Offline — free tier is sleeping');
+                    return false;
+                }
+            } catch {
+                setStatus('offline', 'Cannot reach server');
+                return false;
+            }
+        }
+
+        async function wakeUpModel() {
+            if (wakingInterval) return;
+            setStatus('waking', 'Warming up AI model… this can take 30-60 seconds');
+            wakeUpBtn.style.display = 'inline-block';
+            wakeUpBtn.disabled = true;
+            wakeUpBtn.textContent = 'Waking up…';
+
+            let attempts = 0;
+            const maxAttempts = 18; // 18 × 5s = 90s max
+
+            wakingInterval = setInterval(async () => {
+                attempts++;
+                const online = await checkModelStatusSilent();
+                if (online) {
+                    clearInterval(wakingInterval);
+                    wakingInterval = null;
+                    setStatus('online', 'AI Model Ready ✓');
+                    wakeUpBtn.disabled = false;
+                    wakeUpBtn.textContent = 'Wake Up AI';
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(wakingInterval);
+                    wakingInterval = null;
+                    setStatus('offline', 'AI Model did not respond — try again later');
+                    wakeUpBtn.disabled = false;
+                    wakeUpBtn.textContent = 'Retry Wake Up';
+                    wakeUpBtn.style.display = 'inline-block';
+                }
+            }, 5000);
+        }
+
+        async function checkModelStatusSilent() {
+            try {
+                const resp = await fetch('/api/v1/model-status');
+                const data = await resp.json();
+                return data.status === 'online';
+            } catch {
+                return false;
+            }
+        }
+
+        // Check on page load
+        checkModelStatus();
     </script>
 </body>
+
 </html>
