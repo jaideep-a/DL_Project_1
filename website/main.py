@@ -71,6 +71,17 @@ def health():
     })
 
 
+@app.route('/api/v1/model-status')
+def api_model_status():
+    """Check if the AI model API is online (for frontend status widget)."""
+    is_healthy = check_model_health()
+    return jsonify({
+        'status': 'online' if is_healthy else 'offline',
+        'message': 'AI model is ready' if is_healthy else 'AI model is warming up or unavailable',
+        'timestamp': datetime.now().isoformat()
+    })
+
+
 # ===================== HOME / LANDING PAGE =====================
 
 @app.route('/')
