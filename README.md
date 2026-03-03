@@ -134,7 +134,7 @@ The web app forwards X-ray images to an external pneumonia detection model API a
 - Python 3.11+
 - pip
 - A [Supabase](https://supabase.com) project (free tier works)
-- External model API URL (your team's deployed pneumonia detection model)
+- External model API URL = https://dl-project-1-kqcz.onrender.com
 
 ### Installation
 
@@ -166,11 +166,8 @@ cp .env.example .env
 
 Required `.env` values:
 ```
-MODEL_API_URL=https://<your-model-api>/predict
-MODEL_API_HEALTH_URL=https://<your-model-api>/health
-SUPABASE_URL=https://<your-project>.supabase.co
-SUPABASE_KEY=<your-supabase-anon-key>
-SECRET_KEY=<any-random-string>
+MODEL_API_URL=https://dl-project-1-kqcz.onrender.com/api/predict
+MODEL_API_HEALTH_URL=https://dl-project-1-kqcz.onrender.com
 ```
 
 **5. Initialize the database:**
@@ -300,7 +297,7 @@ This project used **Claude (Anthropic)** as an AI coding assistant for the web a
 - Database schema and setup scripts
 - Project structure and deployment configuration
 
-**Claude was NOT used for training the deep learning pneumonia detection model.** The model was developed and trained independently by the team.
+**Claude was NOT used for training the deep learning pneumonia detection model.** The model was developed and trained independently by the team. Claude code was used for website development.
 
 ---
 
