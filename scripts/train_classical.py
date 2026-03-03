@@ -4,7 +4,6 @@ Classical ML Model — HOG Features + SVM Classifier
 Extracts Histogram of Oriented Gradients (HOG) features from chest
 X-ray images and trains a Support Vector Machine (SVM) classifier.
 
-AI Attribution: Script written with assistance from Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/train_classical.py

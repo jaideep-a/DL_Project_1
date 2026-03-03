@@ -1,5 +1,3 @@
-# AI Attribution: This file was developed with assistance from Claude (Anthropic).
-# https://claude.ai
 
 import requests
 from .config import Config

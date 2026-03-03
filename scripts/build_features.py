@@ -8,7 +8,6 @@ For this project the deep learning model (ResNet/ViT) learns features
 end-to-end, so this script provides a HOG-based classical feature
 extraction pipeline as a reference / baseline.
 
-AI Attribution: Script structure assisted by Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/build_features.py

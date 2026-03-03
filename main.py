@@ -4,7 +4,6 @@ Main Entry Point
 
 This script provides a unified interface to run the application.
 
-AI Attribution: Code structure generated with assistance from Claude AI (Anthropic)
 via Cursor IDE on February 2026.
 
 Usage:

@@ -7,7 +7,6 @@ detection model and running offline predictions on images.
 For live predictions the web application (main.py -> app/) calls the
 external model API configured via MODEL_API_URL in .env.
 
-AI Attribution: Script structure assisted by Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/model.py --train

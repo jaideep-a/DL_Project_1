@@ -4,7 +4,6 @@ Naive Baseline Model — Most Frequent Class Classifier
 Predicts the most common class in the training set for every input.
 Used as a lower-bound benchmark for more sophisticated models.
 
-AI Attribution: Script written with assistance from Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/train_naive.py

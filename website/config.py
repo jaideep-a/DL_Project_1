@@ -1,5 +1,3 @@
-# AI Attribution: This file was developed with assistance from Claude (Anthropic).
-# https://claude.ai
 
 import os
 from dotenv import load_dotenv
@@ -16,10 +14,6 @@ class Config:
     MODEL_API_URL = os.getenv('MODEL_API_URL', '')
     MODEL_API_HEALTH_URL = os.getenv('MODEL_API_HEALTH_URL', '')
     MODEL_API_KEY = os.getenv('MODEL_API_KEY', '')
-
-    # Supabase Configuration
-    SUPABASE_URL = os.getenv('SUPABASE_URL', '')
-    SUPABASE_KEY = os.getenv('SUPABASE_KEY', '')
 
     # File Storage
     API_TIMEOUT_SECONDS = int(os.getenv('API_TIMEOUT_SECONDS', '30'))
@@ -43,8 +37,4 @@ class Config:
         missing = []
         if not cls.MODEL_API_URL:
             missing.append('MODEL_API_URL')
-        if not cls.SUPABASE_URL:
-            missing.append('SUPABASE_URL')
-        if not cls.SUPABASE_KEY:
-            missing.append('SUPABASE_KEY')
         return missing

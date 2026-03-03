@@ -9,7 +9,6 @@ Uses:
 - Weighted cross-entropy loss to handle class imbalance
 - Data augmentation (flip, rotation) for better generalisation
 
-AI Attribution: Script written with assistance from Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/train_deep.py

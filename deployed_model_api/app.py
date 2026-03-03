@@ -4,7 +4,6 @@ MediAlert Model API
 Standalone REST API for pneumonia detection from chest X-ray images.
 Uses a trained HOG + SVM classifier (82.1% test accuracy).
 
-AI Attribution: This file was written with assistance from Claude AI (Anthropic), Feb 2026.
 
 Endpoints:
     GET  /health       - Health check

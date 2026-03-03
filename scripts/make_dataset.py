@@ -8,7 +8,6 @@ Expected layout:
         val/    NORMAL/  PNEUMONIA/
         test/   NORMAL/  PNEUMONIA/
 
-AI Attribution: Script structure assisted by Claude AI (Anthropic), Feb 2026.
 
 Usage:
     python scripts/make_dataset.py

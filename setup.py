@@ -7,7 +7,6 @@ This script prepares the project environment:
 - Initializes database
 - Validates configuration
 
-AI Attribution: Code generated with assistance from Claude AI (Anthropic)
 via Cursor IDE on February 2026.
 
 Usage:
@@ -16,6 +15,7 @@ Usage:
 
 import os
 import sys
+import subprocess
 from pathlib import Path
 
 def create_directories():
@@ -37,7 +37,7 @@ def create_directories():
 
 def check_dependencies():
     """Check if required packages are installed."""
-    required = ['flask', 'requests', 'supabase']
+    required = ['flask', 'requests']
     missing = []
     
     for package in required:
@@ -63,6 +63,24 @@ def check_env():
     print("Found .env configuration")
     return True
 
+def run_pipeline():
+    """Run data ingestion, feature building, and model training."""
+    print("\n--- Running Pipeline Scripts ---")
+    scripts = [
+        ("make_dataset.py", []),
+        ("build_features.py", []),
+        ("model.py", ["--train"])
+    ]
+    for script, args in scripts:
+        script_path = Path('scripts') / script
+        if script_path.exists():
+            print(f"> Executing {script}...")
+            # We use check=False so it doesn't hard-fail if data is missing during setup
+            subprocess.run([sys.executable, str(script_path)] + args, check=False)
+        else:
+            print(f"> Warning: {script} not found in scripts/")
+    print("--- Pipeline Scripts Completed ---\n")
+
 def main():
     print("=" * 60)
     print("MediAlert Project Setup")
@@ -79,12 +97,13 @@ def main():
         print("\nConfiguration incomplete. Please create .env file.")
         sys.exit(1)
     
+    run_pipeline()
+    
     print("\n" + "=" * 60)
     print("Setup complete!")
     print("=" * 60)
     print("\nNext steps:")
-    print("  1. Ensure database is initialized: python scripts/setup_database.py")
-    print("  2. Run the application: python main.py")
+    print("  1. Run the application: python main.py")
     print("\n")
 
 if __name__ == "__main__":

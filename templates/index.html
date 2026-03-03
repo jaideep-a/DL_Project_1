@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediAlert - AI-Powered Outbreak Surveillance</title>
+    <title>MediAlert - AI Medical Assistant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -531,6 +531,18 @@
                 margin-top: 2rem;
             }
         }
+        
+        .dropzone { border: 2px dashed #0ea5e9; border-radius: 12px; padding: 3rem 1rem; cursor: pointer; background: #f8fafc; transition: all 0.3s; }
+        .dropzone:hover { background: #f0f9ff; border-color: #0284c7; }
+        .btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow:none; transform:none; }
+        .preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+        .preview-item { width: 100px; height: 100px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .result-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-top: 1rem; text-align: left; animation: fadeIn 0.4s ease; }
+        .result-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; color: #0f172a;}
+        .normal { color: #047857; background: #ecfdf5; padding: 0.2rem 0.5rem; border-radius: 5px; font-weight: bold;}
+        .pneumonia { color: #b91c1c; background: #fef2f2; padding: 0.2rem 0.5rem; border-radius: 5px; font-weight: bold;}
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 
@@ -542,7 +554,7 @@
             <ul class="nav-menu">
                 <li><a href="#why">Why It Matters</a></li>
                 <li><a href="#solution">How It Works</a></li>
-                <li><a href="/surveillance" class="nav-btn">Start Surveillance</a></li>
+                <li><a href="#portals" class="nav-btn">Try Scanner</a></li>
             </ul>
         </div>
     </nav>
@@ -553,11 +565,10 @@
                 <span style="font-size: 1.2rem;">⚡</span> Next-Generation Outbreak Prevention
             </div>
             <h1>Stop the next pandemic <br><span class="hero-text-gradient">before it starts.</span></h1>
-            <p>Real-time AI surveillance that detects respiratory disease surges across India in hours, not weeks.
-                Protect your hospital, protect the nation.</p>
+            <p>Advanced deep learning models that detect pneumonia in chest X-rays in seconds, not hours.
+                Empowering doctors with instant, accurate clinical insights.</p>
             <div class="hero-actions">
-                <a href="/hospital/upload" class="btn-large btn-primary">Process Scans Now</a>
-                <a href="#portals" class="btn-large btn-secondary">Explore Portals</a>
+                <a href="#portals" class="btn-large btn-primary">Try Deep Learning Scanner</a>
             </div>
         </div>
     </section>
@@ -652,22 +663,23 @@
         </div>
     </section>
 
-    <section class="portals" id="portals">
-        <h2>Enter the Network</h2>
-        <div class="portal-cards">
-            <div class="p-card">
-                <div class="p-icon">🏥</div>
-                <h3>Clinical Node</h3>
-                <p>Upload patient X-rays, get instant AI analysis, and view capacity projections for your hospital.</p>
-                <a href="/hospital/login" class="btn-large btn-primary">Open Clinical Portal</a>
-            </div>
-            <div class="p-card">
-                <div class="p-icon">🌍</div>
-                <h3>National Command</h3>
-                <p>View aggregated, anonymized real-time data on respiratory anomalies across the Indian subcontinent.
-                </p>
-                <a href="/surveillance" class="btn-large btn-secondary">Open Command Center</a>
-            </div>
+    <section class="portals" id="portals" style="background:#f8fafc;">
+        <h2>Deep Learning Scanner</h2>
+        <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.05); text-align: center;">
+            <p style="color: #64748b; margin-bottom: 2rem; font-size:1.1rem;">Upload a Chest X-ray to predict PNEUMONIA vs NORMAL.</p>
+            <form id="uploadForm">
+                <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                    <h3>Click or drag X-ray images here</h3>
+                    <p style="margin-bottom:0; font-size:14px;">Supports JPG, PNG</p>
+                </div>
+                <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png" style="display:none;">
+                <div class="preview-container" id="previewContainer"></div>
+                
+                <button type="submit" class="btn-large btn-primary" id="submitBtn" disabled style="width:100%; margin-top:1.5rem; border:none; cursor:pointer;">Scan Images</button>
+                <div id="loading" style="display:none; color:#0ea5e9; margin-top:1rem; font-weight:500;">Scanning using DL Model... Please wait.</div>
+            </form>
+            <div id="resultsContainer" style="text-align:left; margin-top:20px;"></div>
+            <button class="btn-large btn-secondary" style="display:none; width:100%; margin-top:15px; border:none; cursor:pointer;" id="clearBtn" onclick="window.location.reload()">Process New Images</button>
         </div>
     </section>
 
@@ -693,7 +705,87 @@
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
+
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        let selectedFiles = [];
+
+        fileInput.addEventListener('change', (e) => {
+            const added = Array.from(e.target.files).filter(f => f.type.match(/image\/(jpg|jpeg|png)/));
+            selectedFiles = [...selectedFiles, ...added];
+            updatePreview();
+        });
+
+        const dropzone = document.getElementById('dropzone');
+        dropzone.addEventListener('dragover', (e) => e.preventDefault());
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const added = Array.from(e.dataTransfer.files).filter(f => f.type.match(/image\/(jpg|jpeg|png)/));
+            selectedFiles = [...selectedFiles, ...added];
+            updatePreview();
+        });
+
+        function updatePreview() {
+            previewContainer.innerHTML = '';
+            selectedFiles.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => previewContainer.insertAdjacentHTML('beforeend', `<div class="preview-item"><img src="${e.target.result}"></div>`);
+                reader.readAsDataURL(file);
+            });
+            submitBtn.disabled = selectedFiles.length === 0;
+            submitBtn.innerHTML = `Scan ${selectedFiles.length} Image(s)`;
+        }
+
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(selectedFiles.length === 0) return;
+            
+            submitBtn.style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            const formData = new FormData();
+            selectedFiles.forEach(file => formData.append('images', file));
+
+            try {
+                const res = await fetch('/', { method: 'POST', body: formData });
+                const data = await res.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('clearBtn').style.display = 'block';
+                const rc = document.getElementById('resultsContainer');
+                rc.innerHTML = '<h3 style="text-align:left; margin-top:20px;">Results:</h3>';
+                
+                if (data.results) {
+                    data.results.forEach(r => {
+                        if(r.status === 'error') {
+                            rc.insertAdjacentHTML('beforeend', `<div class="result-card" style="border-left:4px solid red">${r.filename}: Error - ${r.error}</div>`);
+                        } else {
+                            const isP1 = r.prediction === 'PNEUMONIA';
+                            const badge = isP1 ? 'pneumonia' : 'normal';
+                            rc.insertAdjacentHTML('beforeend', `
+                                <div class="result-card" style="border-left:4px solid ${isP1 ? '#b91c1c' : '#047857'}">
+                                    <div class="result-title">${r.filename}</div>
+                                    <div style="margin-bottom:8px;">Prediction: <span class="${badge}">${r.prediction}</span></div>
+                                    <div style="font-size:14px; color:#475569;">Confidence: ${(r.confidence*100).toFixed(1)}%</div>
+                                    <div style="font-size:13px; color:#64748b; margin-top:6px;">${r.analysis}</div>
+                                </div>
+                            `);
+                        }
+                    });
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            } catch(err) {
+                alert('Analysis failed. The model API might be unavailable.');
+                window.location.reload();
+            }
+        });
     </script>
+    <p style="text-align: center; color: #94a3b8; font-size: 0.9rem; margin-top: 2.5rem; padding-bottom: 2rem;">
+        Built for AIPI 540 Project 1 by Jaideep, Hanfu, and Keming
+    </p>
 </body>
 
 </html>
