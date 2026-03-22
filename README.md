@@ -27,21 +27,21 @@ MediAlert addresses the critical need for rapid, scalable pneumonia detection du
 - **Backend**: Python 3.10, Flask
 - **Frontend**: HTML5, CSS3, JavaScript (vanilla)
 - **Database**: Supabase (PostgreSQL)
-- **ML Model**: External deep learning model API for pneumonia detection (trained separately)
+- **ML Model**: custom built deep learning model for pneumonia detection (trained separately and hosted on onrender)
 - **HTTP Client**: Requests
 - **Deployment**: Railway (with Gunicorn)
 
 ## Architecture
 
 ```
-User Browser --> Web App (Flask/Railway) --> Model API (External) --> Response --> User
+User Browser --> Web App (Flask/Railway) --> Model API (custom built model on onrender) --> Response --> User
                         |
                         v
                   Supabase (PostgreSQL)
                   (Patient data, alerts, surveillance)
 ```
 
-The web application serves as the frontend and API layer. It forwards X-ray images to an external deep learning model API for inference and stores results in the database for surveillance and reporting.
+The web application serves as the frontend and API layer. It forwards X-ray images to an custom built deep learning model API for inference and stores results in the database for surveillance and reporting.
 
 ## Project Structure
 
